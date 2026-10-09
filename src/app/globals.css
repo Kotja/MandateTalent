@@ -747,38 +747,71 @@
   box-shadow: 0 4px 22px rgba(18, 26, 42, 0.45);
 }
 
-/* Same Bodoni sizing as before (144 / 180); glass fill + lit rim. */
+/* Same Bodoni sizing as before (144 / 180); clear sage glass + lit rim. */
 .liquid-glass-numeral {
   display: inline-block;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(
-    160deg,
-    rgba(255, 253, 249, 0.7) 0%,
-    rgba(121, 128, 105, 0.34) 38%,
-    rgba(121, 128, 105, 0.48) 100%
-  );
+  /* Specular streak over tinted glass body — sharp, not frosted. */
+  background-image:
+    linear-gradient(
+      118deg,
+      rgba(255, 253, 249, 0.98) 0%,
+      rgba(255, 253, 249, 0.7) 10%,
+      rgba(255, 253, 249, 0.12) 22%,
+      transparent 34%,
+      transparent 58%,
+      rgba(255, 253, 249, 0.28) 72%,
+      rgba(200, 210, 175, 0.18) 88%,
+      transparent 100%
+    ),
+    linear-gradient(
+      165deg,
+      rgba(255, 253, 249, 0.78) 0%,
+      rgba(190, 200, 165, 0.5) 20%,
+      rgba(121, 128, 105, 0.55) 48%,
+      rgba(90, 96, 72, 0.68) 78%,
+      rgba(150, 160, 125, 0.42) 100%
+    );
+  background-size: 100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
-  /* Gradient-like rim: bright top edge, sage lower edge via paired shadows + stroke */
-  -webkit-text-stroke: 1.25px rgba(121, 128, 105, 0.55);
+  /* Gradient-like rim: bright top/left, sage bottom/right */
+  -webkit-text-stroke: 1.35px rgba(121, 128, 105, 0.58);
   paint-order: stroke fill;
   filter:
-    drop-shadow(0 1px 0 rgba(255, 253, 249, 0.95))
-    drop-shadow(0 -1px 0 rgba(90, 96, 72, 0.4));
+    drop-shadow(0 1.5px 0 rgba(255, 253, 249, 1))
+    drop-shadow(1.25px 0 0 rgba(255, 253, 249, 0.65))
+    drop-shadow(0 -1.5px 0 rgba(70, 78, 55, 0.48))
+    drop-shadow(-1px 0 0 rgba(90, 96, 72, 0.28))
+    drop-shadow(0 12px 22px rgba(121, 128, 105, 0.2));
 }
 
 .dark .liquid-glass-numeral {
-  background-image: linear-gradient(
-    160deg,
-    rgba(250, 246, 239, 0.55) 0%,
-    rgba(183, 196, 214, 0.18) 42%,
-    rgba(183, 196, 214, 0.32) 100%
-  );
-  -webkit-text-stroke: 1.25px rgba(250, 246, 239, 0.4);
+  background-image:
+    linear-gradient(
+      118deg,
+      rgba(250, 246, 239, 0.85) 0%,
+      rgba(250, 246, 239, 0.45) 12%,
+      transparent 28%,
+      transparent 60%,
+      rgba(250, 246, 239, 0.2) 76%,
+      transparent 100%
+    ),
+    linear-gradient(
+      165deg,
+      rgba(250, 246, 239, 0.58) 0%,
+      rgba(183, 196, 214, 0.28) 28%,
+      rgba(183, 196, 214, 0.18) 55%,
+      rgba(61, 78, 108, 0.42) 100%
+    );
+  -webkit-text-stroke: 1.35px rgba(250, 246, 239, 0.42);
   filter:
-    drop-shadow(0 1px 0 rgba(250, 246, 239, 0.7))
-    drop-shadow(0 -1px 0 rgba(18, 26, 42, 0.7));
+    drop-shadow(0 1.5px 0 rgba(250, 246, 239, 0.85))
+    drop-shadow(1.25px 0 0 rgba(250, 246, 239, 0.4))
+    drop-shadow(0 -1.5px 0 rgba(18, 26, 42, 0.75))
+    drop-shadow(-1px 0 0 rgba(18, 26, 42, 0.45))
+    drop-shadow(0 12px 22px rgba(18, 26, 42, 0.55));
 }
 
 .site-header {
