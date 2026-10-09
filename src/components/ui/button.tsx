@@ -3,24 +3,19 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-md border border-transparent bg-clip-padding font-sans text-[16px] font-medium whitespace-nowrap transition-colors outline-none select-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "group/button inline-flex min-h-11 shrink-0 items-center justify-center rounded-[12px] border-0 bg-clip-padding px-5 py-2 text-center font-sans text-[16px] font-medium whitespace-normal transition-[transform,background-color,box-shadow] select-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-primary-foreground hover:bg-accent hover:text-primary-foreground active:bg-accent",
-        outline:
-          "border-border bg-background text-foreground hover:border-accent hover:bg-accent hover:text-primary-foreground active:bg-accent",
-        secondary:
-          "border-border bg-background text-foreground hover:border-accent hover:bg-accent hover:text-primary-foreground",
-        ghost:
-          "bg-transparent text-foreground hover:bg-accent hover:text-primary-foreground",
-        destructive:
-          "bg-accent text-primary-foreground hover:bg-accent active:bg-accent",
-        link: "text-primary hover:text-accent",
+        default: "glass-cta",
+        outline: "glass-cta glass-cta-quiet",
+        secondary: "glass-cta glass-cta-quiet",
+        ghost: "border-transparent bg-transparent text-foreground hover:text-foreground",
+        destructive: "glass-cta",
+        link: "border-transparent text-foreground hover:text-foreground",
       },
       size: {
-        default: "h-11 gap-2 px-5",
+        default: "h-auto min-h-11 gap-2 px-5",
         xs: "h-8 gap-1 px-2 text-[13px]",
         sm: "h-9 gap-1.5 px-3",
         lg: "h-12 gap-2 px-6",

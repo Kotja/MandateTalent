@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 // Paths copied from the humbleicons package (MIT). Do not redraw.
 const glyphs = {
   "user": "<path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M18 19v-1.25c0-2.071-1.919-3.75-4.286-3.75h-3.428C7.919 14 6 15.679 6 17.75V19m9-11a3 3 0 11-6 0 3 3 0 016 0z\" />",
@@ -17,6 +19,8 @@ const glyphs = {
   "info-circle": "<path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M11 11h1v5.5m0 0h1.5m-1.5 0h-1.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9.5-4v-.5h.5V8h-.5Z\"/>",
   "chevron-down": "<path stroke-linecap=\"round\" stroke-width=\"2\" d=\"M5 10l7 7 7-7\" />",
   "arrow-join": "<path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"m21 12-3-3m3 3-3 3m3-3h-5.929a5 5 0 0 0-3.535 1.464l-1.072 1.072A5 5 0 0 1 6.93 16H3m0-8h4.343a4 4 0 0 1 2.829 1.172l1.656 1.656A4 4 0 0 0 14.657 12H18\"/>",
+  "sun": "<path stroke=\"currentColor\" stroke-linecap=\"round\" stroke-width=\"2\" d=\"M12 4.5V3m0 18v-1.5m9-7.5h-1.5m-15 0H3m14.303-5.303l1.061-1.061M5.636 18.364l1.06-1.06m11.668 1.06l-1.06-1.06M6.696 6.696L5.636 5.636M16 12a4 4 0 11-8 0 4 4 0 018 0z\" />",
+  "moon": "<path stroke=\"currentColor\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M20 14.12A7.78 7.78 0 019.88 4a7.782 7.782 0 002.9 15A7.782 7.782 0 0020 14.12z\" />",
 } as const;
 
 export type IconName = keyof typeof glyphs;
@@ -25,10 +29,12 @@ export function Icon({
   name,
   size = 24,
   className,
+  style,
 }: {
   name: IconName;
   size?: 16 | 20 | 24;
   className?: string;
+  style?: CSSProperties;
 }) {
   return (
     <svg
@@ -41,6 +47,7 @@ export function Icon({
       aria-hidden="true"
       focusable="false"
       className={className}
+      style={style}
       dangerouslySetInnerHTML={{ __html: glyphs[name] }}
     />
   );

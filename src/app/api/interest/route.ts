@@ -89,7 +89,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         message:
-          "We could not save your interest just now. Your answers are still here — please try again.",
+          "We could not save your interest just now. Your answers are still here. Please try again.",
         errors: {},
       },
       { status: 500 },

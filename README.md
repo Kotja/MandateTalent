@@ -32,7 +32,7 @@ GitHub Pages is a static export and has no API. If the save cannot be reached, t
 
 ## GitHub Pages
 
-`npm run build:pages` sets `STATIC_EXPORT=true`, which builds `out/` with `basePath` and `assetPrefix` of `/MandateTalent`. The local dev and `next start` builds do not use that path. Pages deploys `out/` from GitHub Actions. There is no custom domain.
+`npm run build:pages` sets `STATIC_EXPORT=true`, which builds `out/` with `output: "export"` and `trailingSlash`. The export is rooted for https://mandatetalent.com/, so it does not use a `/MandateTalent` base path. Local dev and `next start` keep the interest API. Pages deploys `out/` from GitHub Actions. `public/CNAME` is `mandatetalent.com`.
 
 ## Stack
 

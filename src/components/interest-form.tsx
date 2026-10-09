@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,13 +28,28 @@ function chooseAudience(path: Audience) {
   }, 300);
 }
 
+const sageLift = {
+  borderWidth: 0,
+  borderStyle: "none" as const,
+  borderColor: "transparent",
+};
+
 export function AudienceButtons() {
   return (
     <div className="flex flex-col gap-3 sm:flex-row">
-      <Button type="button" onClick={() => chooseAudience("talent")}>
+      <Button type="button" style={sageLift} onClick={() => chooseAudience("talent")}>
         {"I'm talent"}
       </Button>
-      <Button type="button" variant="outline" onClick={() => chooseAudience("hiring")}>
+      <Button
+        type="button"
+        variant="outline"
+        className="frost-white"
+        style={{
+          borderWidth: 0,
+          borderColor: "transparent",
+        }}
+        onClick={() => chooseAudience("hiring")}
+      >
         {"I'm hiring"}
       </Button>
     </div>
@@ -141,7 +156,7 @@ export function InterestForm() {
         setErrors(data?.errors ?? {});
         setFormError(
           data?.message ??
-            "We could not save your interest, so nothing was stored. Your answers are still here — please try again.",
+            "We could not save your interest, so nothing was stored. Your answers are still here. Please try again.",
         );
         return;
       }
@@ -151,7 +166,7 @@ export function InterestForm() {
     } catch {
       setStatus("error");
       setFormError(
-        "We could not save your interest, so nothing was stored. Your answers are still here — please try again.",
+        "We could not save your interest, so nothing was stored. Your answers are still here. Please try again.",
       );
     }
   }
@@ -164,7 +179,7 @@ export function InterestForm() {
       >
         <Icon name="check" size={24} className="text-primary" />
         <h3 className="mt-4">Interest saved</h3>
-        <p className="mt-3 max-w-[62ch] text-[16px] leading-relaxed text-foreground">
+        <p className="mt-3 max-w-[62ch] text-[16px] leading-[1.2] text-foreground">
           {successMessage}
         </p>
         <Button type="button" className="mt-6" onClick={reset}>
@@ -187,7 +202,12 @@ export function InterestForm() {
         </div>
       ) : null}
 
-      <fieldset className="flex flex-col gap-3" disabled={busy}>
+      <fieldset
+        className="flex flex-col gap-3"
+        disabled={busy}
+        aria-invalid={errors.path ? true : undefined}
+        aria-describedby={errors.path ? "path-error" : undefined}
+      >
         <legend className="mb-1 text-[16px] text-foreground">
           Which describes you?
         </legend>
@@ -386,13 +406,13 @@ export function InterestForm() {
           </Field>
         </div>
       ) : (
-        <p className="text-[16px] text-muted-foreground">
+        <p className="text-[16px] leading-[1.2] text-foreground">
           Choose talent or hiring to see the questions for you.
         </p>
       )}
 
       <div>
-        <Button type="submit" disabled={busy}>
+        <Button type="submit" className="rounded-[50px]" style={sageLift} disabled={busy}>
           {busy ? "Sending your interest…" : "Register interest"}
         </Button>
       </div>
@@ -422,8 +442,8 @@ function PathCard({
   return (
     <label
       className={cn(
-        "flex cursor-pointer items-start gap-3 rounded-md border bg-background p-4 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary",
-        checked ? "border-primary" : "border-border",
+        "tile-glass flex cursor-pointer items-start gap-3 border-0 p-4 outline-none",
+        checked && "tile-selected",
       )}
     >
       <input
@@ -438,7 +458,7 @@ function PathCard({
       <Icon name={icon} size={24} className="mt-0.5 shrink-0 text-primary" />
       <span className="flex flex-col gap-1">
         <span className="text-[16px] text-foreground">{title}</span>
-        <span className="text-[13px] leading-5 text-muted-foreground">{detail}</span>
+        <span className="text-[13px] leading-[1.2] text-foreground">{detail}</span>
       </span>
       {checked ? (
         <Icon name="check" size={20} className="ml-auto text-primary" />
@@ -467,7 +487,7 @@ function Field({
       <Label htmlFor={id}>{label}</Label>
       {children}
       {hint ? (
-        <p id={`${id}-hint`} className="text-[13px] leading-5 text-muted-foreground">
+        <p id={`${id}-hint`} className="text-[13px] leading-[1.2] text-muted-foreground">
           {hint}
         </p>
       ) : null}
@@ -478,7 +498,7 @@ function Field({
 
 function FieldError({ id, children }: { id: string; children: React.ReactNode }) {
   return (
-    <p id={id} className="flex items-start gap-2 text-[13px] leading-5 text-foreground">
+    <p id={id} className="flex items-start gap-2 text-[13px] leading-[1.2] text-foreground">
       <Icon name="info-circle" size={16} className="mt-0.5 shrink-0 text-accent" />
       <span>{children}</span>
     </p>
@@ -506,34 +526,105 @@ function Select({
   invalid?: boolean;
   describedBy?: string;
 }) {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const listId = `${id}-list`;
+  const selected = options.find((option) => option.value === value);
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointer(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointer);
+    return () => document.removeEventListener("mousedown", onPointer);
+  }, [open]);
+
+  function openList() {
+    const current = options.findIndex((option) => option.value === value);
+    setActive(current >= 0 ? current : 0);
+    setOpen(true);
+  }
+
+  function choose(next: string) {
+    onChange(next);
+    setOpen(false);
+  }
+
+  function onKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
+    if (disabled) return;
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      if (!open) {
+        openList();
+        return;
+      }
+      setActive((current) => {
+        const next = event.key === "ArrowDown" ? current + 1 : current - 1;
+        return (next + options.length) % options.length;
+      });
+    } else if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      if (!open) openList();
+      else choose(options[active]?.value ?? "");
+    } else if (event.key === "Escape") {
+      setOpen(false);
+    } else if (event.key === "Home") {
+      event.preventDefault();
+      setActive(0);
+    } else if (event.key === "End") {
+      event.preventDefault();
+      setActive(options.length - 1);
+    }
+  }
+
   return (
-    <div className="relative">
-      <select
+    <div ref={rootRef} className="relative">
+      <input type="hidden" name={name} value={value} />
+      <button
         id={id}
-        name={name}
-        value={value}
+        type="button"
         disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={listId}
         aria-invalid={invalid || undefined}
         aria-describedby={describedBy}
-        onChange={(event) => onChange(event.target.value)}
         className={cn(
-          "h-11 w-full appearance-none rounded-md border bg-background px-3 pr-10 text-[16px] font-sans outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50",
-          invalid ? "border-accent" : "border-border",
-          value ? "text-foreground" : "text-muted-foreground",
+          "field-surface nested-radius flex h-11 w-full items-center justify-between gap-2 border-0 px-3 text-left text-[16px] font-sans outline-none disabled:cursor-not-allowed disabled:opacity-50",
+          value ? "" : "field-placeholder",
         )}
+        onClick={() => (open ? setOpen(false) : openList())}
+        onKeyDown={onKeyDown}
       >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <Icon
-        name="chevron-down"
-        size={16}
-        className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground"
-      />
+        <span className="truncate">{selected?.label ?? placeholder}</span>
+        <Icon name="chevron-down" size={16} className="shrink-0 text-muted-foreground" />
+      </button>
+      {open ? (
+        <ul
+          id={listId}
+          role="listbox"
+          aria-labelledby={id}
+          className="menu-glass nested-radius absolute z-20 mt-1 max-h-60 w-full overflow-auto p-1"
+        >
+          {options.map((option, index) => (
+            <li
+              key={option.value}
+              id={`${id}-opt-${option.value}`}
+              role="option"
+              aria-selected={value === option.value}
+              data-active={index === active ? "true" : undefined}
+              className="cursor-pointer rounded-[8px] px-3 py-2 text-[16px]"
+              onMouseEnter={() => setActive(index)}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => choose(option.value)}
+            >
+              {option.label}
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }

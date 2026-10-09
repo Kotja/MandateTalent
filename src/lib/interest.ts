@@ -20,9 +20,9 @@ export const companySizes = [
 ] as const;
 
 export const covers = [
-  { value: "finance-ops", label: "Finance ops" },
+  { value: "finance-ops", label: "Finance operations" },
   { value: "customer-service", label: "Customer service" },
-  { value: "marketing-ops", label: "Marketing ops" },
+  { value: "marketing-ops", label: "Marketing operations" },
   { value: "other", label: "Other" },
 ] as const;
 
@@ -117,9 +117,9 @@ export function validateInterest(
   }
 
   if (!email) {
-    errors.email = "Enter your email address.";
+    errors.email = "Enter an email like name@company.com.au.";
   } else if (!emailPattern.test(email) || email.length > 200) {
-    errors.email = "Enter a valid email address, such as name@company.com.";
+    errors.email = "Enter an email like name@company.com.au.";
   }
 
   if (note.length > 2000) {

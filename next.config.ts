@@ -16,8 +16,6 @@ const nextConfig: NextConfig = {
   ...(staticExport
     ? {
         output: "export",
-        basePath: "/MandateTalent",
-        assetPrefix: "/MandateTalent",
         images: { unoptimized: true },
         // The interest API is a Route Handler (route.ts). Static export cannot
         // publish it. Local server builds keep the default extensions so the
