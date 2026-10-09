@@ -49,14 +49,15 @@ export function ThemeToggle() {
       onClick={() => choose(!dark)}
       className="theme-glass-toggle focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#798069]"
     >
-      <span
-        aria-hidden="true"
-        className="theme-glass-toggle__thumb"
-        style={{
-          transform: dark ? "translateX(16px)" : "translateX(0px)",
-          transition: reduceMotion ? "none" : "transform 160ms ease",
-        }}
-      />
+      <span className="theme-glass-toggle__track" aria-hidden="true">
+        <span
+          className="theme-glass-toggle__thumb"
+          style={{
+            transform: dark ? "translateX(16px)" : "translateX(0px)",
+            transition: reduceMotion ? "none" : "transform 160ms ease",
+          }}
+        />
+      </span>
     </button>
   );
 }
