@@ -57,13 +57,7 @@ export default function Home() {
             <ThemeToggle />
             <a
               href="#register"
-              className={cn(buttonVariants(), "h-11 rounded-[50px] border-0 px-4")}
-              style={{
-                borderWidth: 0,
-                borderStyle: "none",
-                borderColor: "transparent",
-                boxShadow: "none",
-              }}
+              className={cn(buttonVariants(), "h-11 rounded-[50px] px-4")}
             >
               Register interest
             </a>
@@ -196,7 +190,7 @@ export default function Home() {
 
         <section id="fee" className="scroll-mt-28 border-t border-border">
           <div className="shell-26 mx-auto flex w-full max-w-[1080px] flex-wrap items-center gap-x-10 gap-y-6 px-5 py-16 sm:px-6 md:py-24">
-            <p className="font-heading text-[144px] leading-none font-semibold tracking-[-0.01em] text-primary md:text-[180px]">
+            <p className="glass-numeral font-heading text-[144px] leading-none font-semibold tracking-[-0.01em] md:text-[180px]">
               12%
             </p>
             <div className="flex min-w-[16rem] flex-1 flex-col gap-3">

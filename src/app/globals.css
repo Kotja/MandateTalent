@@ -238,42 +238,86 @@
   }
 }
 
-/* Glass CTAs. Label is navy on light glass and cream on dark glass.
-   Fill stays translucent sage. A solid edge carries the 3:1 boundary. */
+/* Glass CTAs: frosted plate with rim light, emboss, and soft lift.
+   Light theme stays cream/beige glass; dark stays navy glass. Sage tint is the brand fill. */
 .glass-cta,
 .glass-cta:hover,
 .glass-cta:active {
-  border: 0;
-  background-color: color-mix(in srgb, #798069 68%, transparent);
+  border: 1px solid rgba(255, 253, 249, 0.55);
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.42) 0%,
+    color-mix(in srgb, #798069 58%, transparent) 42%,
+    color-mix(in srgb, #798069 72%, transparent) 100%
+  );
+  background-color: color-mix(in srgb, #798069 55%, transparent);
   color: #1e293c;
   text-decoration: none;
   transform: translateY(-2px);
-  box-shadow: 0 4px 22px rgba(217, 205, 184, 0.7);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 253, 249, 0.72),
+    inset 0 -1px 0 rgba(122, 108, 90, 0.22),
+    0 1px 0 rgba(255, 253, 249, 0.35),
+    0 6px 22px rgba(217, 205, 184, 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
 }
 
 .glass-cta:hover {
-  background-color: color-mix(in srgb, #798069 74%, transparent);
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.5) 0%,
+    color-mix(in srgb, #798069 64%, transparent) 42%,
+    color-mix(in srgb, #798069 78%, transparent) 100%
+  );
+  background-color: color-mix(in srgb, #798069 62%, transparent);
   transform: translateY(-4px);
-  box-shadow: 0 5px 26px rgba(217, 205, 184, 0.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 253, 249, 0.82),
+    inset 0 -1px 0 rgba(122, 108, 90, 0.2),
+    0 1px 0 rgba(255, 253, 249, 0.4),
+    0 8px 28px rgba(217, 205, 184, 0.82);
 }
 
 .glass-cta:active {
   transform: translateY(0);
-  box-shadow: 0 2px 16px rgba(217, 205, 184, 0.55);
+  box-shadow:
+    inset 0 1px 2px rgba(122, 108, 90, 0.28),
+    inset 0 -1px 0 rgba(255, 253, 249, 0.35),
+    0 2px 14px rgba(217, 205, 184, 0.5);
 }
 
 .dark .glass-cta,
 .dark .glass-cta:hover,
 .dark .glass-cta:active {
-  border: 0;
+  border: 1px solid rgba(250, 246, 239, 0.22);
+  background-image: linear-gradient(
+    165deg,
+    rgba(250, 246, 239, 0.14) 0%,
+    color-mix(in srgb, #798069 48%, transparent) 45%,
+    color-mix(in srgb, #31415a 70%, transparent) 100%
+  );
+  background-color: color-mix(in srgb, #31415a 55%, transparent);
   color: #faf6ef;
-  box-shadow: 0 4px 24px rgba(18, 26, 42, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(250, 246, 239, 0.28),
+    inset 0 -1px 0 rgba(18, 26, 42, 0.55),
+    0 1px 0 rgba(250, 246, 239, 0.08),
+    0 6px 24px rgba(18, 26, 42, 0.55);
 }
 
 .dark .glass-cta:hover {
-  box-shadow: 0 5px 28px rgba(18, 26, 42, 0.6);
+  background-image: linear-gradient(
+    165deg,
+    rgba(250, 246, 239, 0.18) 0%,
+    color-mix(in srgb, #798069 54%, transparent) 45%,
+    color-mix(in srgb, #3d4e6c 72%, transparent) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(250, 246, 239, 0.34),
+    inset 0 -1px 0 rgba(18, 26, 42, 0.5),
+    0 1px 0 rgba(250, 246, 239, 0.1),
+    0 8px 28px rgba(18, 26, 42, 0.62);
 }
 
 .skip-link {
@@ -312,40 +356,80 @@
   outline-offset: 3px;
 }
 
-/* Hiring choice: cream on the cream page, lighter navy on the navy page. */
+/* Hiring choice: cream frosted glass on light, lighter navy glass on dark. */
 .glass-cta.frost-white,
 .glass-cta.frost-white:hover,
 .glass-cta.frost-white:active {
-  border: 0;
-  background-color: #fffdf9;
+  border: 1px solid rgba(255, 253, 249, 0.7);
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.88) 0%,
+    rgba(250, 246, 239, 0.55) 52%,
+    rgba(243, 238, 230, 0.42) 100%
+  );
+  background-color: rgba(255, 253, 249, 0.55);
   color: #1e293c;
-  box-shadow: 0 4px 22px rgba(217, 205, 184, 0.7);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 253, 249, 0.95),
+    inset 0 -1px 0 rgba(217, 205, 184, 0.35),
+    0 1px 0 rgba(255, 253, 249, 0.45),
+    0 6px 22px rgba(217, 205, 184, 0.7);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
 }
 
 .glass-cta.frost-white:hover {
-  background-color: color-mix(in srgb, #faf6ef 32%, transparent);
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.95) 0%,
+    rgba(250, 246, 239, 0.62) 52%,
+    rgba(243, 238, 230, 0.48) 100%
+  );
   transform: translateY(-4px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 253, 249, 1),
+    inset 0 -1px 0 rgba(217, 205, 184, 0.3),
+    0 1px 0 rgba(255, 253, 249, 0.5),
+    0 8px 28px rgba(217, 205, 184, 0.8);
 }
 
 .glass-cta.frost-white:active {
   transform: translateY(0);
+  box-shadow:
+    inset 0 1px 2px rgba(217, 205, 184, 0.45),
+    inset 0 -1px 0 rgba(255, 253, 249, 0.5),
+    0 2px 14px rgba(217, 205, 184, 0.5);
 }
 
 .dark .glass-cta.frost-white,
 .dark .glass-cta.frost-white:hover,
 .dark .glass-cta.frost-white:active {
-  border: 0;
-  background-color: #31415a;
+  border: 1px solid rgba(250, 246, 239, 0.2);
+  background-image: linear-gradient(
+    165deg,
+    rgba(250, 246, 239, 0.12) 0%,
+    rgba(61, 78, 108, 0.55) 48%,
+    rgba(49, 65, 90, 0.72) 100%
+  );
+  background-color: rgba(49, 65, 90, 0.55);
   color: #faf6ef;
-  box-shadow: 0 4px 24px rgba(18, 26, 42, 0.55);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  box-shadow:
+    inset 0 1px 0 rgba(250, 246, 239, 0.26),
+    inset 0 -1px 0 rgba(18, 26, 42, 0.55),
+    0 1px 0 rgba(250, 246, 239, 0.08),
+    0 6px 24px rgba(18, 26, 42, 0.55);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
 }
 
 .dark .glass-cta.frost-white:hover {
-  background-color: #3d4e6c;
+  background-image: linear-gradient(
+    165deg,
+    rgba(250, 246, 239, 0.16) 0%,
+    rgba(61, 78, 108, 0.62) 48%,
+    rgba(61, 78, 108, 0.78) 100%
+  );
+  background-color: rgba(61, 78, 108, 0.62);
 }
 
 .brand-logo {
@@ -555,6 +639,41 @@
   box-shadow: 0 4px 22px rgba(18, 26, 42, 0.45);
 }
 
+/* Fee numeral: frosted glass glyph with rim light and soft float shadow. */
+.glass-numeral {
+  display: inline-block;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 253, 249, 0.92) 0%,
+    rgba(250, 246, 239, 0.42) 38%,
+    rgba(217, 205, 184, 0.55) 72%,
+    rgba(121, 128, 105, 0.5) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 253, 249, 0.45);
+  filter:
+    drop-shadow(0 1px 0 rgba(255, 253, 249, 0.85))
+    drop-shadow(0 -0.5px 0 rgba(122, 108, 90, 0.28))
+    drop-shadow(0 14px 28px rgba(217, 205, 184, 0.55));
+}
+
+.dark .glass-numeral {
+  background-image: linear-gradient(
+    180deg,
+    rgba(250, 246, 239, 0.55) 0%,
+    rgba(183, 196, 214, 0.28) 40%,
+    rgba(61, 78, 108, 0.55) 78%,
+    rgba(49, 65, 90, 0.72) 100%
+  );
+  -webkit-text-stroke: 1px rgba(250, 246, 239, 0.28);
+  filter:
+    drop-shadow(0 1px 0 rgba(250, 246, 239, 0.35))
+    drop-shadow(0 -0.5px 0 rgba(18, 26, 42, 0.65))
+    drop-shadow(0 16px 32px rgba(18, 26, 42, 0.65));
+}
+
 .site-header {
   background-color: #faf6ef;
   border-bottom-color: #e4d9c8;
@@ -592,5 +711,9 @@
     transition: none;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+
+  .glass-numeral {
+    filter: none;
   }
 }

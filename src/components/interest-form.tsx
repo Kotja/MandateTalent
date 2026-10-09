@@ -28,26 +28,16 @@ function chooseAudience(path: Audience) {
   }, 300);
 }
 
-const sageLift = {
-  borderWidth: 0,
-  borderStyle: "none" as const,
-  borderColor: "transparent",
-};
-
 export function AudienceButtons() {
   return (
     <div className="flex flex-col gap-3 sm:flex-row">
-      <Button type="button" style={sageLift} onClick={() => chooseAudience("talent")}>
+      <Button type="button" onClick={() => chooseAudience("talent")}>
         {"I'm talent"}
       </Button>
       <Button
         type="button"
         variant="outline"
         className="frost-white"
-        style={{
-          borderWidth: 0,
-          borderColor: "transparent",
-        }}
         onClick={() => chooseAudience("hiring")}
       >
         {"I'm hiring"}
@@ -412,7 +402,7 @@ export function InterestForm() {
       )}
 
       <div>
-        <Button type="submit" className="rounded-[50px]" style={sageLift} disabled={busy}>
+        <Button type="submit" className="rounded-[50px]" disabled={busy}>
           {busy ? "Sending your interest…" : "Register interest"}
         </Button>
       </div>
