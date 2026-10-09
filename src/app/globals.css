@@ -747,47 +747,46 @@
   box-shadow: 0 4px 22px rgba(18, 26, 42, 0.45);
 }
 
-/* Fee numeral: clear glass (see-through) with a light sage tint on cream. */
+/*
+  Clear glass numeral (not frosted):
+  Haze came from milky mid-fill + soft blurred drop-shadows.
+  Clear glass = almost empty fill, sharp specular rim, no glow blur.
+*/
 .liquid-glass-numeral {
   display: inline-block;
   color: transparent;
   -webkit-text-fill-color: transparent;
   background-image: linear-gradient(
-    155deg,
-    rgba(255, 253, 249, 0.9) 0%,
-    rgba(255, 253, 249, 0.28) 14%,
-    color-mix(in srgb, #798069 12%, transparent) 36%,
-    color-mix(in srgb, #798069 6%, transparent) 58%,
-    color-mix(in srgb, #798069 16%, transparent) 82%,
-    rgba(255, 253, 249, 0.42) 100%
+    160deg,
+    rgba(255, 253, 249, 0.75) 0%,
+    rgba(255, 253, 249, 0.08) 18%,
+    color-mix(in srgb, #798069 8%, transparent) 45%,
+    color-mix(in srgb, #798069 4%, transparent) 70%,
+    rgba(255, 253, 249, 0.2) 100%
   );
   background-size: 100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-stroke: 1px rgba(255, 253, 249, 0.5);
+  /* Crisp glass edge — thin, not a soft halo */
+  -webkit-text-stroke: 1.25px rgba(121, 128, 105, 0.45);
   paint-order: stroke fill;
   filter:
-    drop-shadow(0 1.5px 0 rgba(255, 253, 249, 0.95))
-    drop-shadow(0 -0.5px 0 rgba(121, 128, 105, 0.22))
-    drop-shadow(1px 0 0 rgba(255, 253, 249, 0.35))
-    drop-shadow(0 14px 28px rgba(217, 205, 184, 0.4));
+    drop-shadow(0 1px 0 rgba(255, 253, 249, 1))
+    drop-shadow(0 -1px 0 rgba(121, 128, 105, 0.35));
 }
 
 .dark .liquid-glass-numeral {
   background-image: linear-gradient(
-    155deg,
-    rgba(250, 246, 239, 0.55) 0%,
-    rgba(250, 246, 239, 0.12) 16%,
-    rgba(183, 196, 214, 0.04) 48%,
-    rgba(61, 78, 108, 0.12) 78%,
-    rgba(250, 246, 239, 0.22) 100%
+    160deg,
+    rgba(250, 246, 239, 0.45) 0%,
+    rgba(250, 246, 239, 0.06) 20%,
+    rgba(183, 196, 214, 0.03) 55%,
+    rgba(250, 246, 239, 0.12) 100%
   );
-  -webkit-text-stroke: 1px rgba(250, 246, 239, 0.32);
+  -webkit-text-stroke: 1.25px rgba(250, 246, 239, 0.35);
   filter:
-    drop-shadow(0 1.5px 0 rgba(250, 246, 239, 0.55))
-    drop-shadow(0 -0.5px 0 rgba(18, 26, 42, 0.65))
-    drop-shadow(1px 0 0 rgba(250, 246, 239, 0.18))
-    drop-shadow(0 16px 30px rgba(18, 26, 42, 0.6));
+    drop-shadow(0 1px 0 rgba(250, 246, 239, 0.65))
+    drop-shadow(0 -1px 0 rgba(18, 26, 42, 0.7));
 }
 
 .site-header {
@@ -830,16 +829,15 @@
     backdrop-filter: none;
   }
 
-  .liquid-glass-numeral,
-  .dark .liquid-glass-numeral {
+  .liquid-glass-numeral {
     filter:
-      drop-shadow(0 1px 0 rgba(255, 253, 249, 0.85))
-      drop-shadow(0 12px 24px rgba(217, 205, 184, 0.45));
+      drop-shadow(0 1px 0 rgba(255, 253, 249, 1))
+      drop-shadow(0 -1px 0 rgba(121, 128, 105, 0.35));
   }
 
   .dark .liquid-glass-numeral {
     filter:
-      drop-shadow(0 1px 0 rgba(250, 246, 239, 0.55))
-      drop-shadow(0 12px 24px rgba(18, 26, 42, 0.6));
+      drop-shadow(0 1px 0 rgba(250, 246, 239, 0.65))
+      drop-shadow(0 -1px 0 rgba(18, 26, 42, 0.7));
   }
 }
