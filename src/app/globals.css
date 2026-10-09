@@ -516,32 +516,29 @@
   align-items: center;
   padding: 2px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 253, 249, 0.72);
+  border: 1px solid rgba(217, 205, 184, 0.65);
   background-image: linear-gradient(
-    165deg,
-    rgba(255, 253, 249, 0.55) 0%,
-    color-mix(in srgb, #f3eee6 70%, transparent) 45%,
-    color-mix(in srgb, #d9cdb8 55%, transparent) 100%
+    180deg,
+    rgba(217, 205, 184, 0.35) 0%,
+    rgba(255, 253, 249, 0.55) 55%,
+    rgba(250, 246, 239, 0.72) 100%
   );
-  background-color: color-mix(in srgb, #f3eee6 55%, transparent);
+  background-color: #f3eee6;
+  /* Recessed trough — inset only, no outer lift/bump */
   box-shadow:
-    inset 0 1.5px 0 rgba(255, 253, 249, 0.88),
-    inset 1px 0 0 rgba(255, 253, 249, 0.35),
-    inset 0 -1px 0 rgba(122, 108, 90, 0.28),
-    0 1px 0 rgba(255, 253, 249, 0.45),
-    0 6px 18px rgba(217, 205, 184, 0.7);
-  -webkit-backdrop-filter: blur(18px) saturate(170%);
-  backdrop-filter: blur(18px) saturate(170%);
+    inset 0 2px 4px rgba(122, 108, 90, 0.35),
+    inset 0 1px 2px rgba(30, 41, 60, 0.12),
+    inset 0 -1px 0 rgba(255, 253, 249, 0.75);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   pointer-events: none;
 }
 
 .theme-glass-toggle:hover .theme-glass-toggle__track {
   box-shadow:
-    inset 0 1.5px 0 rgba(255, 253, 249, 0.95),
-    inset 1px 0 0 rgba(255, 253, 249, 0.4),
-    inset 0 -1px 0 rgba(122, 108, 90, 0.24),
-    0 1px 0 rgba(255, 253, 249, 0.5),
-    0 8px 22px rgba(217, 205, 184, 0.8);
+    inset 0 2px 5px rgba(122, 108, 90, 0.4),
+    inset 0 1px 2px rgba(30, 41, 60, 0.14),
+    inset 0 -1px 0 rgba(255, 253, 249, 0.8);
 }
 
 .theme-glass-toggle__thumb {
@@ -564,27 +561,25 @@
 }
 
 .dark .theme-glass-toggle__track {
-  border: 1px solid rgba(250, 246, 239, 0.28);
+  border: 1px solid rgba(18, 26, 42, 0.55);
   background-image: linear-gradient(
-    165deg,
-    rgba(250, 246, 239, 0.16) 0%,
-    color-mix(in srgb, #31415a 55%, transparent) 48%,
-    color-mix(in srgb, #172033 80%, transparent) 100%
+    180deg,
+    rgba(18, 26, 42, 0.55) 0%,
+    rgba(49, 65, 90, 0.65) 55%,
+    rgba(61, 78, 108, 0.5) 100%
   );
-  background-color: color-mix(in srgb, #172033 65%, transparent);
+  background-color: #172033;
   box-shadow:
-    inset 0 1px 0 rgba(250, 246, 239, 0.28),
-    inset 0 -1px 0 rgba(18, 26, 42, 0.55),
-    0 1px 0 rgba(250, 246, 239, 0.08),
-    0 6px 18px rgba(18, 26, 42, 0.55);
+    inset 0 2px 5px rgba(18, 26, 42, 0.85),
+    inset 0 1px 2px rgba(0, 0, 0, 0.35),
+    inset 0 -1px 0 rgba(250, 246, 239, 0.08);
 }
 
 .dark .theme-glass-toggle:hover .theme-glass-toggle__track {
   box-shadow:
-    inset 0 1px 0 rgba(250, 246, 239, 0.34),
-    inset 0 -1px 0 rgba(18, 26, 42, 0.5),
-    0 1px 0 rgba(250, 246, 239, 0.1),
-    0 8px 22px rgba(18, 26, 42, 0.62);
+    inset 0 2px 6px rgba(18, 26, 42, 0.9),
+    inset 0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 -1px 0 rgba(250, 246, 239, 0.1);
 }
 
 .dark .theme-glass-toggle__thumb {
