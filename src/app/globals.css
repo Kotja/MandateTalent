@@ -752,45 +752,47 @@
   box-shadow: 0 4px 22px rgba(18, 26, 42, 0.45);
 }
 
-/* Fee numeral: liquid glass — sage green on cream, cream glass on navy. */
+/* Fee numeral: clear glass (see-through) with a light sage tint on cream. */
 .liquid-glass-numeral {
   display: inline-block;
   color: transparent;
   -webkit-text-fill-color: transparent;
   background-image: linear-gradient(
-    165deg,
-    rgba(255, 253, 249, 0.55) 0%,
-    color-mix(in srgb, #798069 28%, transparent) 26%,
-    color-mix(in srgb, #798069 52%, transparent) 58%,
-    color-mix(in srgb, #798069 68%, transparent) 100%
+    155deg,
+    rgba(255, 253, 249, 0.9) 0%,
+    rgba(255, 253, 249, 0.28) 14%,
+    color-mix(in srgb, #798069 12%, transparent) 36%,
+    color-mix(in srgb, #798069 6%, transparent) 58%,
+    color-mix(in srgb, #798069 16%, transparent) 82%,
+    rgba(255, 253, 249, 0.42) 100%
   );
   background-size: 100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-stroke: 0.75px rgba(255, 253, 249, 0.35);
+  -webkit-text-stroke: 1px rgba(255, 253, 249, 0.5);
   paint-order: stroke fill;
   filter:
-    drop-shadow(0 1px 0 rgba(255, 253, 249, 0.55))
-    drop-shadow(0 -1px 0 rgba(121, 128, 105, 0.28))
-    drop-shadow(0 0 14px rgba(121, 128, 105, 0.18))
-    drop-shadow(0 16px 30px rgba(217, 205, 184, 0.5));
+    drop-shadow(0 1.5px 0 rgba(255, 253, 249, 0.95))
+    drop-shadow(0 -0.5px 0 rgba(121, 128, 105, 0.22))
+    drop-shadow(1px 0 0 rgba(255, 253, 249, 0.35))
+    drop-shadow(0 14px 28px rgba(217, 205, 184, 0.4));
 }
 
 .dark .liquid-glass-numeral {
   background-image: linear-gradient(
-    165deg,
-    rgba(250, 246, 239, 0.5) 0%,
-    rgba(250, 246, 239, 0.12) 24%,
-    rgba(183, 196, 214, 0.05) 50%,
-    rgba(61, 78, 108, 0.22) 78%,
-    rgba(250, 246, 239, 0.28) 100%
+    155deg,
+    rgba(250, 246, 239, 0.55) 0%,
+    rgba(250, 246, 239, 0.12) 16%,
+    rgba(183, 196, 214, 0.04) 48%,
+    rgba(61, 78, 108, 0.12) 78%,
+    rgba(250, 246, 239, 0.22) 100%
   );
-  -webkit-text-stroke: 0.75px rgba(250, 246, 239, 0.28);
+  -webkit-text-stroke: 1px rgba(250, 246, 239, 0.32);
   filter:
-    drop-shadow(0 1px 0 rgba(250, 246, 239, 0.4))
-    drop-shadow(0 -1px 0 rgba(18, 26, 42, 0.65))
-    drop-shadow(0 0 16px rgba(250, 246, 239, 0.14))
-    drop-shadow(0 18px 32px rgba(18, 26, 42, 0.65));
+    drop-shadow(0 1.5px 0 rgba(250, 246, 239, 0.55))
+    drop-shadow(0 -0.5px 0 rgba(18, 26, 42, 0.65))
+    drop-shadow(1px 0 0 rgba(250, 246, 239, 0.18))
+    drop-shadow(0 16px 30px rgba(18, 26, 42, 0.6));
 }
 
 .site-header {
