@@ -234,13 +234,13 @@ export default function Home() {
                 <text
                   x="8"
                   y="158"
-                  fontFamily='"Bodoni Moda SC", serif'
+                  className="liquid-glass-numeral__text"
                   fontSize="168"
                   fontWeight="600"
                   letterSpacing="-0.02em"
                   fill="url(#fee-glass-fill)"
                   stroke="url(#fee-glass-stroke)"
-                  strokeWidth="2.75"
+                  strokeWidth="3.25"
                   paintOrder="stroke fill"
                 >
                   12%
