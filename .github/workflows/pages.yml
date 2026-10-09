@@ -63,3 +63,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+        env:
+          # deploy-pages@v5 still loads the legacy punycode module. Node 24
+          # warns, and no newer release has removed that import.
+          NODE_OPTIONS: --disable-warning=DEP0040
