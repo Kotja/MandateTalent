@@ -747,70 +747,102 @@
   box-shadow: 0 4px 22px rgba(18, 26, 42, 0.45);
 }
 
-/* Same Bodoni sizing as before (144 / 180); clear sage glass + lit rim. */
+/* Same Bodoni sizing as before (144 / 180); clear faceted sage glass + lit rim. */
 .liquid-glass-numeral {
   display: inline-block;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  /* Specular streak over tinted glass body — sharp, not frosted. */
+  /*
+   * Clear glass: hot specular catch + soft refraction bands through sage.
+   * No frost blur, no engraved hatch — cream shows through lighter facets.
+   */
   background-image:
+    radial-gradient(
+      70% 55% at 14% 8%,
+      rgba(255, 253, 249, 1) 0%,
+      rgba(255, 253, 249, 0.7) 16%,
+      rgba(255, 253, 249, 0.12) 38%,
+      transparent 56%
+    ),
     linear-gradient(
-      118deg,
-      rgba(255, 253, 249, 0.98) 0%,
-      rgba(255, 253, 249, 0.7) 10%,
-      rgba(255, 253, 249, 0.12) 22%,
-      transparent 34%,
+      125deg,
+      rgba(255, 253, 249, 0.88) 0%,
+      transparent 28%,
       transparent 58%,
-      rgba(255, 253, 249, 0.28) 72%,
-      rgba(200, 210, 175, 0.18) 88%,
+      rgba(255, 253, 249, 0.35) 78%,
       transparent 100%
     ),
     linear-gradient(
-      165deg,
-      rgba(255, 253, 249, 0.78) 0%,
-      rgba(190, 200, 165, 0.5) 20%,
-      rgba(121, 128, 105, 0.55) 48%,
-      rgba(90, 96, 72, 0.68) 78%,
-      rgba(150, 160, 125, 0.42) 100%
+      160deg,
+      rgba(255, 253, 249, 0.82) 0%,
+      rgba(200, 210, 175, 0.38) 18%,
+      rgba(121, 128, 105, 0.28) 36%,
+      rgba(90, 96, 72, 0.62) 52%,
+      rgba(170, 180, 145, 0.35) 68%,
+      rgba(121, 128, 105, 0.48) 84%,
+      rgba(200, 210, 175, 0.4) 100%
     );
-  background-size: 100% 100%;
+  background-size: 140% 140%, 100% 100%, 100% 100%;
+  background-position: 0% 0%, 0 0, 0 0;
   -webkit-background-clip: text;
   background-clip: text;
   /* Gradient-like rim: bright top/left, sage bottom/right */
-  -webkit-text-stroke: 1.35px rgba(121, 128, 105, 0.58);
+  -webkit-text-stroke: 1.15px rgba(100, 108, 82, 0.42);
   paint-order: stroke fill;
   filter:
-    drop-shadow(0 1.5px 0 rgba(255, 253, 249, 1))
-    drop-shadow(1.25px 0 0 rgba(255, 253, 249, 0.65))
-    drop-shadow(0 -1.5px 0 rgba(70, 78, 55, 0.48))
-    drop-shadow(-1px 0 0 rgba(90, 96, 72, 0.28))
-    drop-shadow(0 12px 22px rgba(121, 128, 105, 0.2));
+    drop-shadow(0 2px 0 rgba(255, 253, 249, 1))
+    drop-shadow(2px 0 0 rgba(255, 253, 249, 0.75))
+    drop-shadow(0 -2px 0 rgba(55, 62, 42, 0.42))
+    drop-shadow(-1.5px 0 0 rgba(70, 78, 55, 0.28))
+    drop-shadow(0 12px 22px rgba(121, 128, 105, 0.18));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .liquid-glass-numeral {
+    animation: glass-numeral-sheen 10s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes glass-numeral-sheen {
+  0% {
+    background-position: 0% 0%, 0 0, 0 0;
+  }
+  100% {
+    background-position: 35% 40%, 0 0, 0 0;
+  }
 }
 
 .dark .liquid-glass-numeral {
   background-image:
+    radial-gradient(
+      70% 55% at 14% 8%,
+      rgba(250, 246, 239, 0.95) 0%,
+      rgba(250, 246, 239, 0.45) 18%,
+      transparent 52%
+    ),
     linear-gradient(
-      118deg,
-      rgba(250, 246, 239, 0.85) 0%,
-      rgba(250, 246, 239, 0.45) 12%,
-      transparent 28%,
+      125deg,
+      rgba(250, 246, 239, 0.55) 0%,
+      transparent 30%,
       transparent 60%,
-      rgba(250, 246, 239, 0.2) 76%,
+      rgba(250, 246, 239, 0.22) 80%,
       transparent 100%
     ),
     linear-gradient(
-      165deg,
-      rgba(250, 246, 239, 0.58) 0%,
-      rgba(183, 196, 214, 0.28) 28%,
-      rgba(183, 196, 214, 0.18) 55%,
-      rgba(61, 78, 108, 0.42) 100%
+      160deg,
+      rgba(250, 246, 239, 0.55) 0%,
+      rgba(183, 196, 214, 0.28) 22%,
+      rgba(183, 196, 214, 0.12) 44%,
+      rgba(61, 78, 108, 0.48) 66%,
+      rgba(183, 196, 214, 0.22) 84%,
+      rgba(250, 246, 239, 0.32) 100%
     );
-  -webkit-text-stroke: 1.35px rgba(250, 246, 239, 0.42);
+  -webkit-text-stroke: 1.15px rgba(250, 246, 239, 0.36);
   filter:
-    drop-shadow(0 1.5px 0 rgba(250, 246, 239, 0.85))
-    drop-shadow(1.25px 0 0 rgba(250, 246, 239, 0.4))
-    drop-shadow(0 -1.5px 0 rgba(18, 26, 42, 0.75))
-    drop-shadow(-1px 0 0 rgba(18, 26, 42, 0.45))
+    drop-shadow(0 2px 0 rgba(250, 246, 239, 0.9))
+    drop-shadow(2px 0 0 rgba(250, 246, 239, 0.45))
+    drop-shadow(0 -2px 0 rgba(18, 26, 42, 0.8))
+    drop-shadow(-1.5px 0 0 rgba(18, 26, 42, 0.5))
     drop-shadow(0 12px 22px rgba(18, 26, 42, 0.55));
 }
 
@@ -854,4 +886,7 @@
     backdrop-filter: none;
   }
 
+  .liquid-glass-numeral {
+    animation: none;
+  }
 }
