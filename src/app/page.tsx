@@ -190,17 +190,8 @@ export default function Home() {
 
         <section id="fee" className="scroll-mt-28 border-t border-border">
           <div className="shell-26 mx-auto flex w-full max-w-[1080px] flex-wrap items-center gap-x-10 gap-y-6 px-5 py-16 sm:px-6 md:py-24">
-            <p
-              className="liquid-glass-numeral font-heading text-[144px] leading-none font-semibold tracking-[-0.01em] md:text-[180px]"
-              aria-label="12%"
-            >
-              <span className="liquid-glass-numeral__glow" aria-hidden="true">
-                12%
-              </span>
-              <span className="liquid-glass-numeral__body">12%</span>
-              <span className="liquid-glass-numeral__shine" aria-hidden="true">
-                12%
-              </span>
+            <p className="liquid-glass-numeral font-heading text-[144px] leading-none font-semibold tracking-[-0.01em] md:text-[180px]">
+              12%
             </p>
             <div className="flex min-w-[16rem] flex-1 flex-col gap-3">
               <p className="max-w-[40rem] text-[16px] leading-[1.2] text-muted-foreground">
