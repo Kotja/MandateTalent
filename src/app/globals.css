@@ -752,13 +752,13 @@
   SVG stroke can be a real gradient; flat CSS text-stroke cannot.
 */
 .liquid-glass-numeral {
-  /* Visible clear-green glass on cream: translucent sage, lit gradient rim */
+  /* Visible green glass on cream: even sage fill + lit gradient rim */
   --fee-stroke-a: #fffdf9;
-  --fee-stroke-b: rgba(121, 128, 105, 0.45);
-  --fee-stroke-c: rgba(121, 128, 105, 0.85);
-  --fee-fill-a: rgba(255, 253, 249, 0.55);
-  --fee-fill-b: rgba(121, 128, 105, 0.2);
-  --fee-fill-c: rgba(121, 128, 105, 0.42);
+  --fee-stroke-b: rgba(121, 128, 105, 0.55);
+  --fee-stroke-c: rgba(90, 96, 72, 0.9);
+  --fee-fill-a: rgba(121, 128, 105, 0.38);
+  --fee-fill-b: rgba(121, 128, 105, 0.32);
+  --fee-fill-c: rgba(121, 128, 105, 0.48);
   display: block;
   height: 144px;
   width: auto;
