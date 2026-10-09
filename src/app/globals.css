@@ -434,26 +434,54 @@
   background-color: rgba(61, 78, 108, 0.62);
 }
 
-.brand-logo {
-  display: block;
+/* Logo: liquid-glass fill clipped to the mark (navy glass on cream, cream glass on navy). */
+.brand-logo-glass {
+  display: inline-block;
   height: 3rem;
+  aspect-ratio: 1060 / 345;
   width: auto;
+  max-width: none;
+  flex-shrink: 0;
+  align-self: start;
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.7) 0%,
+    rgba(88, 94, 105, 0.42) 28%,
+    rgba(30, 41, 60, 0.78) 68%,
+    rgba(30, 41, 60, 0.92) 100%
+  );
+  background-size: 100% 100%;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  filter:
+    drop-shadow(0 1px 0 rgba(255, 253, 249, 0.95))
+    drop-shadow(0 -1px 0 rgba(30, 41, 60, 0.4))
+    drop-shadow(0 0 14px rgba(255, 253, 249, 0.28))
+    drop-shadow(0 8px 18px rgba(217, 205, 184, 0.55));
 }
 
-.brand-logo-dark {
-  display: none;
-}
-
-.dark .brand-logo-light {
-  display: none;
-}
-
-.dark .brand-logo-dark {
-  display: block;
+.dark .brand-logo-glass {
+  background-image: linear-gradient(
+    165deg,
+    rgba(250, 246, 239, 0.72) 0%,
+    rgba(250, 246, 239, 0.2) 24%,
+    rgba(183, 196, 214, 0.08) 50%,
+    rgba(61, 78, 108, 0.28) 78%,
+    rgba(250, 246, 239, 0.42) 100%
+  );
+  filter:
+    drop-shadow(0 1px 0 rgba(250, 246, 239, 0.75))
+    drop-shadow(0 -1px 0 rgba(18, 26, 42, 0.75))
+    drop-shadow(0 0 18px rgba(250, 246, 239, 0.28))
+    drop-shadow(0 8px 18px rgba(18, 26, 42, 0.7));
 }
 
 @media (min-width: 768px) {
-  .brand-logo {
+  .brand-logo-glass {
     height: 3.5rem;
   }
 }

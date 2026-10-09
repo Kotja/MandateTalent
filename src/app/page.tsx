@@ -12,31 +12,17 @@ const nav = [
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 function BrandLogo() {
-  const frame = {
-    height: 48,
-    width: "auto",
-    maxWidth: "none",
-    objectFit: "contain" as const,
-  };
+  const mask = `url(${basePath}/brand/mandate-talent.png)`;
   return (
-    <span className="inline-flex w-fit max-w-none shrink-0 self-start">
-      <img
-        src={`${basePath}/brand/mandate-talent.png`}
-        alt="Mandate Talent"
-        width={148}
-        height={48}
-        className="block h-12 w-auto max-h-12 max-w-none shrink-0 object-contain dark:hidden"
-        style={frame}
-      />
-      <img
-        src={`${basePath}/brand/mandate-talent-inverse.png`}
-        alt="Mandate Talent"
-        width={148}
-        height={48}
-        className="hidden h-12 w-auto max-h-12 max-w-none shrink-0 object-contain dark:block"
-        style={frame}
-      />
-    </span>
+    <span
+      className="brand-logo-glass"
+      role="img"
+      aria-label="Mandate Talent"
+      style={{
+        WebkitMaskImage: mask,
+        maskImage: mask,
+      }}
+    />
   );
 }
 
