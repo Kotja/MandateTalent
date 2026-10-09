@@ -710,84 +710,46 @@
   box-shadow: 0 4px 22px rgba(18, 26, 42, 0.45);
 }
 
-/* Fee numeral: one glyph, liquid glass via clipped gradients + rim light. */
+/* Fee numeral: clear liquid glass — translucent fill, bright rim, soft float. */
 .liquid-glass-numeral {
   display: inline-block;
   color: transparent;
-  background-image:
-    radial-gradient(
-      120% 80% at 18% 12%,
-      rgba(255, 253, 249, 0.95) 0%,
-      rgba(255, 253, 249, 0.2) 28%,
-      rgba(255, 253, 249, 0) 55%
-    ),
-    linear-gradient(
-      115deg,
-      rgba(255, 253, 249, 0.85) 0%,
-      rgba(255, 253, 249, 0.08) 26%,
-      rgba(250, 246, 239, 0.02) 46%,
-      rgba(217, 205, 184, 0.2) 70%,
-      rgba(255, 253, 249, 0.62) 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(255, 253, 249, 0.28) 0%,
-      rgba(250, 246, 239, 0.04) 38%,
-      rgba(217, 205, 184, 0.16) 76%,
-      rgba(122, 108, 90, 0.14) 100%
-    );
-  background-size: 180% 180%, 240% 240%, 100% 100%;
-  background-position: 10% 0%, 0% 40%, center;
+  -webkit-text-fill-color: transparent;
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.72) 0%,
+    rgba(255, 253, 249, 0.18) 22%,
+    rgba(250, 246, 239, 0.06) 48%,
+    rgba(217, 205, 184, 0.22) 76%,
+    rgba(255, 253, 249, 0.45) 100%
+  );
+  background-size: 100% 100%;
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-stroke: 1.75px rgba(255, 253, 249, 0.88);
+  -webkit-text-stroke: 1.5px rgba(255, 253, 249, 0.75);
+  paint-order: stroke fill;
   filter:
-    drop-shadow(0 2.5px 0 rgba(255, 253, 249, 1))
-    drop-shadow(0 -1.25px 0 rgba(122, 108, 90, 0.38))
-    drop-shadow(1.5px 0 0 rgba(255, 253, 249, 0.45))
-    drop-shadow(-1px 0 0 rgba(122, 108, 90, 0.18))
-    drop-shadow(0 22px 40px rgba(217, 205, 184, 0.62));
-  animation: liquid-glass-flow 10s ease-in-out infinite alternate;
+    drop-shadow(0 1px 0 rgba(255, 253, 249, 0.95))
+    drop-shadow(0 -1px 0 rgba(122, 108, 90, 0.35))
+    drop-shadow(0 0 18px rgba(255, 253, 249, 0.35))
+    drop-shadow(0 18px 34px rgba(217, 205, 184, 0.55));
 }
 
 .dark .liquid-glass-numeral {
-  background-image:
-    radial-gradient(
-      120% 80% at 18% 12%,
-      rgba(250, 246, 239, 0.7) 0%,
-      rgba(250, 246, 239, 0.12) 30%,
-      rgba(250, 246, 239, 0) 55%
-    ),
-    linear-gradient(
-      115deg,
-      rgba(250, 246, 239, 0.55) 0%,
-      rgba(183, 196, 214, 0.08) 30%,
-      rgba(49, 65, 90, 0.12) 52%,
-      rgba(61, 78, 108, 0.35) 78%,
-      rgba(250, 246, 239, 0.32) 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(250, 246, 239, 0.28) 0%,
-      rgba(183, 196, 214, 0.06) 42%,
-      rgba(49, 65, 90, 0.4) 100%
-    );
-  -webkit-text-stroke: 1.25px rgba(250, 246, 239, 0.42);
+  background-image: linear-gradient(
+    165deg,
+    rgba(250, 246, 239, 0.58) 0%,
+    rgba(250, 246, 239, 0.14) 24%,
+    rgba(183, 196, 214, 0.05) 50%,
+    rgba(61, 78, 108, 0.22) 78%,
+    rgba(250, 246, 239, 0.32) 100%
+  );
+  -webkit-text-stroke: 1.5px rgba(250, 246, 239, 0.55);
   filter:
-    drop-shadow(0 2px 0 rgba(250, 246, 239, 0.45))
-    drop-shadow(0 -1px 0 rgba(18, 26, 42, 0.7))
-    drop-shadow(1px 0 0 rgba(250, 246, 239, 0.18))
-    drop-shadow(-1px 0 0 rgba(18, 26, 42, 0.4))
-    drop-shadow(0 20px 40px rgba(18, 26, 42, 0.7));
-}
-
-@keyframes liquid-glass-flow {
-  0% {
-    background-position: 8% 0%, 0% 35%, center;
-  }
-  100% {
-    background-position: 70% 18%, 100% 60%, center;
-  }
+    drop-shadow(0 1px 0 rgba(250, 246, 239, 0.7))
+    drop-shadow(0 -1px 0 rgba(18, 26, 42, 0.75))
+    drop-shadow(0 0 22px rgba(250, 246, 239, 0.22))
+    drop-shadow(0 20px 36px rgba(18, 26, 42, 0.7));
 }
 
 .site-header {
@@ -830,11 +792,16 @@
     backdrop-filter: none;
   }
 
-  .liquid-glass-numeral {
-    animation: none;
+  .liquid-glass-numeral,
+  .dark .liquid-glass-numeral {
+    filter:
+      drop-shadow(0 1px 0 rgba(255, 253, 249, 0.85))
+      drop-shadow(0 12px 24px rgba(217, 205, 184, 0.45));
   }
 
   .dark .liquid-glass-numeral {
-    animation: none;
+    filter:
+      drop-shadow(0 1px 0 rgba(250, 246, 239, 0.55))
+      drop-shadow(0 12px 24px rgba(18, 26, 42, 0.6));
   }
 }
