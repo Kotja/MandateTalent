@@ -47,27 +47,12 @@ export function ThemeToggle() {
       aria-label="Dark mode"
       aria-pressed={dark}
       onClick={() => choose(!dark)}
-      className="relative inline-flex shrink-0 items-center rounded-full border-0 focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#798069]"
-      style={{
-        height: 22,
-        width: 38,
-        padding: 2,
-        backgroundColor: dark ? "#172033" : "#F3EEE6",
-        boxShadow: dark
-          ? "inset 0 2px 6px rgba(18, 26, 42, 0.65)"
-          : "inset 0 2px 6px rgba(217, 205, 184, 0.9)",
-      }}
+      className="theme-glass-toggle focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#798069]"
     >
       <span
         aria-hidden="true"
-        className="pointer-events-none block rounded-full"
+        className="theme-glass-toggle__thumb"
         style={{
-          height: 18,
-          width: 18,
-          backgroundColor: "#798069",
-          boxShadow: dark
-            ? "0 1px 5px rgba(18, 26, 42, 0.55)"
-            : "0 1px 5px rgba(217, 205, 184, 0.85)",
           transform: dark ? "translateX(16px)" : "translateX(0px)",
           transition: reduceMotion ? "none" : "transform 160ms ease",
         }}
