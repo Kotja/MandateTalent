@@ -176,9 +176,77 @@ export default function Home() {
 
         <section id="fee" className="scroll-mt-28 border-t border-border">
           <div className="shell-26 mx-auto flex w-full max-w-[1080px] flex-wrap items-center gap-x-10 gap-y-6 px-5 py-16 sm:px-6 md:py-24">
-            <p className="liquid-glass-numeral font-heading text-[144px] leading-none font-semibold tracking-[-0.01em] md:text-[180px]">
-              12%
-            </p>
+            <div className="liquid-glass-numeral" role="img" aria-label="12%">
+              <svg
+                className="liquid-glass-numeral__svg"
+                viewBox="0 0 400 200"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <defs>
+                  <linearGradient
+                    id="fee-glass-stroke"
+                    x1="0%"
+                    y1="0%"
+                    x2="35%"
+                    y2="100%"
+                  >
+                    <stop
+                      offset="0%"
+                      stopColor="var(--fee-stroke-a)"
+                      stopOpacity="1"
+                    />
+                    <stop
+                      offset="42%"
+                      stopColor="var(--fee-stroke-b)"
+                      stopOpacity="1"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="var(--fee-stroke-c)"
+                      stopOpacity="1"
+                    />
+                  </linearGradient>
+                  <linearGradient
+                    id="fee-glass-fill"
+                    x1="0%"
+                    y1="0%"
+                    x2="0%"
+                    y2="100%"
+                  >
+                    <stop
+                      offset="0%"
+                      stopColor="var(--fee-fill-a)"
+                      stopOpacity="1"
+                    />
+                    <stop
+                      offset="45%"
+                      stopColor="var(--fee-fill-b)"
+                      stopOpacity="1"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="var(--fee-fill-c)"
+                      stopOpacity="1"
+                    />
+                  </linearGradient>
+                </defs>
+                <text
+                  x="8"
+                  y="158"
+                  fontFamily='"Bodoni Moda SC", serif'
+                  fontSize="168"
+                  fontWeight="600"
+                  letterSpacing="-0.02em"
+                  fill="url(#fee-glass-fill)"
+                  stroke="url(#fee-glass-stroke)"
+                  strokeWidth="2.75"
+                  paintOrder="stroke fill"
+                >
+                  12%
+                </text>
+              </svg>
+            </div>
             <div className="flex min-w-[16rem] flex-1 flex-col gap-3">
               <p className="max-w-[40rem] text-[16px] leading-[1.2] text-muted-foreground">
                 Placement fees are transparent.

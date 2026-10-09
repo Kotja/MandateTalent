@@ -748,45 +748,48 @@
 }
 
 /*
-  Clear glass numeral (not frosted):
-  Haze came from milky mid-fill + soft blurred drop-shadows.
-  Clear glass = almost empty fill, sharp specular rim, no glow blur.
+  Clear glass numeral with a lit gradient rim (like the clock reference).
+  SVG stroke can be a real gradient; flat CSS text-stroke cannot.
 */
 .liquid-glass-numeral {
-  display: inline-block;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  background-image: linear-gradient(
-    160deg,
-    rgba(255, 253, 249, 0.75) 0%,
-    rgba(255, 253, 249, 0.08) 18%,
-    color-mix(in srgb, #798069 8%, transparent) 45%,
-    color-mix(in srgb, #798069 4%, transparent) 70%,
-    rgba(255, 253, 249, 0.2) 100%
-  );
-  background-size: 100% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  /* Crisp glass edge — thin, not a soft halo */
-  -webkit-text-stroke: 1.25px rgba(121, 128, 105, 0.45);
-  paint-order: stroke fill;
+  --fee-stroke-a: rgba(255, 253, 249, 0.95);
+  --fee-stroke-b: rgba(255, 253, 249, 0.28);
+  --fee-stroke-c: rgba(121, 128, 105, 0.55);
+  --fee-fill-a: rgba(255, 253, 249, 0.28);
+  --fee-fill-b: rgba(121, 128, 105, 0.06);
+  --fee-fill-c: rgba(121, 128, 105, 0.14);
+  display: block;
+  height: 144px;
+  width: auto;
+  flex-shrink: 0;
   filter:
-    drop-shadow(0 1px 0 rgba(255, 253, 249, 1))
-    drop-shadow(0 -1px 0 rgba(121, 128, 105, 0.35));
+    drop-shadow(0 1px 0 rgba(255, 253, 249, 0.85))
+    drop-shadow(0 -1px 0 rgba(121, 128, 105, 0.28));
 }
 
 .dark .liquid-glass-numeral {
-  background-image: linear-gradient(
-    160deg,
-    rgba(250, 246, 239, 0.45) 0%,
-    rgba(250, 246, 239, 0.06) 20%,
-    rgba(183, 196, 214, 0.03) 55%,
-    rgba(250, 246, 239, 0.12) 100%
-  );
-  -webkit-text-stroke: 1.25px rgba(250, 246, 239, 0.35);
+  --fee-stroke-a: rgba(250, 246, 239, 0.9);
+  --fee-stroke-b: rgba(250, 246, 239, 0.22);
+  --fee-stroke-c: rgba(183, 196, 214, 0.4);
+  --fee-fill-a: rgba(250, 246, 239, 0.22);
+  --fee-fill-b: rgba(183, 196, 214, 0.04);
+  --fee-fill-c: rgba(61, 78, 108, 0.16);
   filter:
-    drop-shadow(0 1px 0 rgba(250, 246, 239, 0.65))
+    drop-shadow(0 1px 0 rgba(250, 246, 239, 0.55))
     drop-shadow(0 -1px 0 rgba(18, 26, 42, 0.7));
+}
+
+.liquid-glass-numeral__svg {
+  display: block;
+  height: 100%;
+  width: auto;
+  overflow: visible;
+}
+
+@media (min-width: 768px) {
+  .liquid-glass-numeral {
+    height: 180px;
+  }
 }
 
 .site-header {
@@ -829,15 +832,4 @@
     backdrop-filter: none;
   }
 
-  .liquid-glass-numeral {
-    filter:
-      drop-shadow(0 1px 0 rgba(255, 253, 249, 1))
-      drop-shadow(0 -1px 0 rgba(121, 128, 105, 0.35));
-  }
-
-  .dark .liquid-glass-numeral {
-    filter:
-      drop-shadow(0 1px 0 rgba(250, 246, 239, 0.65))
-      drop-shadow(0 -1px 0 rgba(18, 26, 42, 0.7));
-  }
 }
