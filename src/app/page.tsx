@@ -61,7 +61,7 @@ export default function Home() {
           </h1>
           <p className="mt-6 max-w-[42rem] text-[16px] leading-[1.2] text-foreground">
             Mandate Talent is an Australian marketplace for short, defined cover
-            contracts — parental leave, long sick leave, and gap cover — in office
+            contracts for parental leave, long sick leave, and gap cover in office
             and knowledge-work roles. We match people who can do the work from day
             one to a contract that says when it starts, when it ends, and how the
             work is handed over.
@@ -90,7 +90,7 @@ export default function Home() {
               <p className="text-[16px] leading-[1.2]">
                 Parental leave, a long illness, or a gap in the team is usually a
                 three to twelve month contract. You need a start, an end, and a
-                person whose right to work still holds at the end — with a buffer,
+                person whose right to work still holds at the end, with a buffer,
                 not only on the day you look them up.
               </p>
               <p className="font-heading text-[22px] leading-[1.12] font-medium tracking-[-0.01em] text-foreground">

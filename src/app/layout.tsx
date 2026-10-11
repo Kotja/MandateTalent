@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Mandate Talent — Cover contracts in Melbourne",
+  title: "Mandate Talent - Cover contracts in Melbourne",
   description:
     "Mandate Talent matches people who can do the work from day one to short, defined cover contracts. Register your interest as talent or as someone hiring. Opening in Melbourne.",
   icons: {
