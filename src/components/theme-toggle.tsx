@@ -12,7 +12,7 @@ function preferredDark() {
   } catch {
     /* private mode */
   }
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return false;
 }
 
 function applyTheme(dark: boolean) {
