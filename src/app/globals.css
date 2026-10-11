@@ -223,11 +223,11 @@
 
   @media (min-width: 768px) {
     .hero-title {
-      font-size: 52px; /* desktop hero */
+      font-size: calc(52px * 4 / 3); /* desktop hero, +1/3 */
     }
 
     h2 {
-      font-size: 38px;
+      font-size: calc(38px * 4 / 3);
     }
   }
 
