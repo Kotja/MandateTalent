@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { OrganicLines } from "@/components/organic-lines";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="flex min-h-full flex-col font-sans">
-        <div className="page-mesh" aria-hidden="true" />
+        <OrganicLines />
         <div className="page-shell">{children}</div>
       </body>
     </html>
