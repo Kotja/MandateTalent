@@ -138,33 +138,12 @@
   }
 
   body {
+    position: relative;
+    isolation: isolate;
     min-height: 100vh;
-    background-color: #faf6ef;
-    /* Slow mesh: warm cream, pale stone, muted sage at low opacity for legibility */
-    background-image:
-      radial-gradient(ellipse 75% 60% at 18% 12%, rgba(255, 253, 249, 0.92), transparent 58%),
-      radial-gradient(ellipse 70% 55% at 82% 18%, rgba(228, 217, 200, 0.42), transparent 55%),
-      radial-gradient(ellipse 65% 50% at 72% 72%, rgba(121, 128, 105, 0.12), transparent 52%),
-      radial-gradient(ellipse 80% 60% at 22% 78%, rgba(217, 205, 184, 0.38), transparent 58%),
-      radial-gradient(ellipse 55% 45% at 48% 42%, rgba(243, 238, 230, 0.7), transparent 50%),
-      radial-gradient(ellipse 50% 40% at 58% 88%, rgba(110, 113, 98, 0.08), transparent 48%);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size:
-      140% 140%,
-      150% 150%,
-      160% 160%,
-      145% 145%,
-      130% 130%,
-      155% 155%;
-    background-position:
-      0% 0%,
-      100% 0%,
-      85% 80%,
-      10% 100%,
-      45% 40%,
-      60% 95%;
-    animation: mesh-drift 96s ease-in-out infinite alternate;
+    /* Base colour lives on html + body::before so the mesh orbs stay visible */
+    background-color: transparent;
+    background-image: none;
     color: var(--foreground);
     font-family: var(--font-body);
     font-size: 16px;
@@ -172,16 +151,55 @@
     line-height: 1.4;
   }
 
+  /* Slow mesh sits behind content: cream + stone strong, sage kept soft for type */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -25%;
+    z-index: -1;
+    pointer-events: none;
+    background-color: #faf6ef;
+    background-image:
+      radial-gradient(closest-side at 18% 22%, rgba(255, 253, 249, 0.98), transparent 72%),
+      radial-gradient(closest-side at 78% 16%, rgba(217, 205, 184, 0.72), transparent 70%),
+      radial-gradient(closest-side at 62% 68%, rgba(121, 128, 105, 0.22), transparent 68%),
+      radial-gradient(closest-side at 16% 78%, rgba(228, 217, 200, 0.78), transparent 72%),
+      radial-gradient(closest-side at 48% 44%, rgba(243, 238, 230, 0.9), transparent 65%),
+      radial-gradient(closest-side at 86% 82%, rgba(110, 113, 98, 0.16), transparent 68%);
+    background-repeat: no-repeat;
+    background-size:
+      58% 52%,
+      62% 56%,
+      70% 62%,
+      64% 58%,
+      54% 48%,
+      60% 54%;
+    background-position:
+      8% 10%,
+      92% 6%,
+      70% 72%,
+      4% 88%,
+      46% 42%,
+      90% 90%;
+    filter: blur(48px) saturate(112%);
+    transform: translate3d(0, 0, 0) scale(1.05);
+    animation: mesh-drift 72s ease-in-out infinite alternate;
+    will-change: background-position, transform;
+  }
+
   html.dark body {
     background-color: #1e293c;
-    /* Navy base with soft sage + pale stone washes; greens stay very low opacity */
+  }
+
+  html.dark body::before {
+    background-color: #1e293c;
     background-image:
-      radial-gradient(ellipse 75% 60% at 16% 14%, rgba(61, 78, 108, 0.5), transparent 58%),
-      radial-gradient(ellipse 70% 55% at 84% 16%, rgba(209, 214, 221, 0.08), transparent 55%),
-      radial-gradient(ellipse 65% 50% at 70% 74%, rgba(121, 128, 105, 0.1), transparent 52%),
-      radial-gradient(ellipse 80% 60% at 20% 82%, rgba(49, 65, 90, 0.55), transparent 58%),
-      radial-gradient(ellipse 55% 45% at 48% 44%, rgba(30, 41, 60, 0.35), transparent 50%),
-      radial-gradient(ellipse 50% 40% at 58% 90%, rgba(110, 113, 98, 0.07), transparent 48%);
+      radial-gradient(closest-side at 16% 20%, rgba(61, 78, 108, 0.85), transparent 72%),
+      radial-gradient(closest-side at 82% 14%, rgba(209, 214, 221, 0.14), transparent 70%),
+      radial-gradient(closest-side at 66% 70%, rgba(121, 128, 105, 0.18), transparent 68%),
+      radial-gradient(closest-side at 14% 82%, rgba(49, 65, 90, 0.9), transparent 72%),
+      radial-gradient(closest-side at 48% 44%, rgba(30, 41, 60, 0.55), transparent 65%),
+      radial-gradient(closest-side at 88% 86%, rgba(110, 113, 98, 0.14), transparent 68%);
   }
 
   h1,
@@ -818,30 +836,33 @@
 @keyframes mesh-drift {
   0% {
     background-position:
-      0% 0%,
-      100% 0%,
-      85% 80%,
-      10% 100%,
-      45% 40%,
-      60% 95%;
+      8% 10%,
+      92% 6%,
+      70% 72%,
+      4% 88%,
+      46% 42%,
+      90% 90%;
+    transform: translate3d(0, 0, 0) scale(1.05);
   }
   50% {
     background-position:
-      28% 18%,
-      72% 22%,
-      62% 58%,
-      24% 72%,
-      52% 48%,
-      48% 78%;
+      28% 28%,
+      70% 22%,
+      52% 58%,
+      22% 68%,
+      54% 50%,
+      74% 70%;
+    transform: translate3d(-1.5%, 1%, 0) scale(1.08);
   }
   100% {
     background-position:
-      55% 40%,
-      20% 55%,
-      35% 20%,
-      80% 30%,
-      30% 70%,
-      75% 50%;
+      52% 36%,
+      30% 48%,
+      28% 24%,
+      78% 34%,
+      34% 66%,
+      62% 52%;
+    transform: translate3d(1.5%, -1%, 0) scale(1.1);
   }
 }
 
@@ -849,6 +870,11 @@
   html,
   body {
     animation: none;
+  }
+
+  body::before {
+    animation: none;
+    filter: blur(36px) saturate(108%);
   }
 
   .glass-cta,
