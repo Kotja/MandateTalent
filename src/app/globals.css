@@ -153,40 +153,53 @@
     background-color: #1e293c;
   }
 
-  /* Dedicated mesh layer — stronger stone/sage contrast so the wash is obvious */
-  .page-mesh {
+  /* Variant 2: low-opacity topographic / wave lines on the right */
+  .page-topo {
     position: fixed;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
     z-index: 0;
+    width: min(56vw, 720px);
     pointer-events: none;
     overflow: hidden;
   }
 
-  .page-mesh::before {
-    content: "";
-    position: absolute;
-    inset: -35%;
-    background:
-      radial-gradient(circle at 20% 18%, rgba(255, 253, 249, 0.95) 0%, transparent 42%),
-      radial-gradient(circle at 82% 22%, rgba(196, 180, 154, 0.7) 0%, transparent 46%),
-      radial-gradient(circle at 68% 72%, rgba(121, 128, 105, 0.38) 0%, transparent 48%),
-      radial-gradient(circle at 18% 78%, rgba(217, 205, 184, 0.75) 0%, transparent 44%),
-      radial-gradient(circle at 48% 48%, rgba(243, 238, 230, 0.55) 0%, transparent 40%),
-      radial-gradient(circle at 88% 84%, rgba(110, 113, 98, 0.28) 0%, transparent 46%);
-    filter: blur(28px) saturate(120%);
-    transform: translate3d(0, 0, 0) scale(1.08);
-    animation: mesh-drift 40s ease-in-out infinite alternate;
-    will-change: transform, filter;
+  @media (max-width: 767px) {
+    .page-topo {
+      width: min(72vw, 420px);
+      opacity: 0.7;
+    }
   }
 
-  .dark .page-mesh::before {
-    background:
-      radial-gradient(circle at 18% 16%, rgba(61, 78, 108, 0.9) 0%, transparent 44%),
-      radial-gradient(circle at 84% 20%, rgba(209, 214, 221, 0.18) 0%, transparent 46%),
-      radial-gradient(circle at 66% 70%, rgba(121, 128, 105, 0.32) 0%, transparent 48%),
-      radial-gradient(circle at 16% 80%, rgba(49, 65, 90, 0.85) 0%, transparent 44%),
-      radial-gradient(circle at 48% 46%, rgba(30, 41, 60, 0.4) 0%, transparent 40%),
-      radial-gradient(circle at 88% 86%, rgba(110, 113, 98, 0.24) 0%, transparent 46%);
+  .page-topo__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .page-topo__line {
+    fill: none;
+    /* Slightly darker beige than #FAF6EF — subliminal, not loud */
+    stroke: #e2d6c4;
+    stroke-width: 1.1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0.55;
+    stroke-dasharray: 1800;
+    stroke-dashoffset: 1800;
+    animation: topo-draw 4.8s ease-out forwards, topo-pulse 14s ease-in-out 4.8s infinite alternate;
+  }
+
+  .dark .page-topo__line {
+    /* Soft navy lift on #1E293C */
+    stroke: #3a4a68;
+    opacity: 0.45;
+  }
+
+  .page-topo__drift {
+    transform-origin: 70% 50%;
+    animation: topo-drift 48s ease-in-out infinite alternate;
   }
 
   .page-shell {
@@ -872,15 +885,27 @@
   box-shadow: 0 4px 24px rgba(18, 26, 42, 0.45);
 }
 
-@keyframes mesh-drift {
-  0% {
-    transform: translate3d(-4%, -3%, 0) scale(1.08) rotate(0deg);
+@keyframes topo-draw {
+  to {
+    stroke-dashoffset: 0;
   }
-  50% {
-    transform: translate3d(5%, 4%, 0) scale(1.14) rotate(2deg);
+}
+
+@keyframes topo-pulse {
+  0% {
+    opacity: 0.42;
   }
   100% {
-    transform: translate3d(-3%, 5%, 0) scale(1.1) rotate(-1.5deg);
+    opacity: 0.62;
+  }
+}
+
+@keyframes topo-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(-2.5%, 1.5%, 0) scale(1.03);
   }
 }
 
@@ -890,9 +915,15 @@
     animation: none;
   }
 
-  .page-mesh::before {
+  .page-topo__line,
+  .page-topo__drift {
     animation: none;
-    filter: blur(22px) saturate(115%);
+  }
+
+  .page-topo__line {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    opacity: 0.5;
   }
 
   .glass-cta,
