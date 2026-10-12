@@ -39,7 +39,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
         />
       </head>
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">
+        <div className="page-mesh" aria-hidden="true" />
+        <div className="page-shell">{children}</div>
+      </body>
     </html>
   );
 }
