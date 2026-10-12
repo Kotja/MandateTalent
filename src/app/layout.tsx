@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { OrganicLines } from "@/components/organic-lines";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -32,10 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
         />
       </head>
-      <body className="flex min-h-full flex-col font-sans">
-        <OrganicLines />
-        <div className="page-shell">{children}</div>
-      </body>
+      <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );
 }
