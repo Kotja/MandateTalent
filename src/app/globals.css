@@ -153,64 +153,6 @@
     background-color: #1e293c;
   }
 
-  /* Variant 2: low-opacity topographic / wave lines on the right */
-  .page-topo {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-    width: min(56vw, 720px);
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  @media (max-width: 767px) {
-    .page-topo {
-      width: min(72vw, 420px);
-      opacity: 0.7;
-    }
-  }
-
-  .page-topo__svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  .page-topo__line {
-    fill: none;
-    /* Slightly darker beige than #FAF6EF — subliminal, not loud */
-    stroke: #e2d6c4;
-    stroke-width: 1.1;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    opacity: 0.55;
-    stroke-dasharray: 1800;
-    stroke-dashoffset: 1800;
-    animation: topo-draw 4.8s ease-out forwards, topo-pulse 14s ease-in-out 4.8s infinite alternate;
-  }
-
-  .dark .page-topo__line {
-    /* Soft navy lift on #1E293C */
-    stroke: #3a4a68;
-    opacity: 0.45;
-  }
-
-  .page-topo__drift {
-    transform-origin: 70% 50%;
-    animation: topo-drift 48s ease-in-out infinite alternate;
-  }
-
-  .page-shell {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    min-height: 100%;
-    flex: 1 1 auto;
-    flex-direction: column;
-  }
-
   h1,
   h2,
   h3,
@@ -287,67 +229,92 @@
   }
 }
 
-/* Glass CTAs: green glass plate + frosted white glass. Exact fill + glass rim, plus under-shadow. */
+/* Glass CTAs: frosted plates with readable edges + under-shadow. */
 .glass-cta,
 .glass-cta:hover,
 .glass-cta:active {
-  border: 0;
+  border: 1px solid rgba(255, 253, 249, 0.72);
   border-radius: 50px;
   background: rgba(110, 113, 98, 0.5);
-  background-image: none;
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.28) 0%,
+    rgba(110, 113, 98, 0.35) 45%,
+    rgba(110, 113, 98, 0.55) 100%
+  );
   color: #1e293c;
   text-decoration: none;
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
-    0 8px 22px rgba(217, 205, 184, 0.7);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  backdrop-filter: blur(14px) saturate(140%);
-  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+    0 1px 3px 0 rgba(255, 255, 255, 0.45) inset,
+    0 -1px 2px 0 rgba(90, 96, 72, 0.18) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 8px 22px rgba(217, 205, 184, 0.75);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
 .glass-cta:hover {
   background: rgba(110, 113, 98, 0.58);
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.35) 0%,
+    rgba(110, 113, 98, 0.42) 45%,
+    rgba(110, 113, 98, 0.62) 100%
+  );
+  border-color: rgba(255, 253, 249, 0.85);
   transform: translateY(-1px);
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
-    0 10px 26px rgba(217, 205, 184, 0.8);
+    0 1px 3px 0 rgba(255, 255, 255, 0.55) inset,
+    0 -1px 2px 0 rgba(90, 96, 72, 0.14) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.28),
+    0 10px 26px rgba(217, 205, 184, 0.85);
 }
 
 .glass-cta:active {
   background: rgba(110, 113, 98, 0.5);
   transform: translateY(0);
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
+    0 1px 3px 0 rgba(255, 255, 255, 0.35) inset,
+    0 1px 2px 0 rgba(90, 96, 72, 0.22) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.16),
     0 4px 14px rgba(217, 205, 184, 0.55);
 }
 
 .dark .glass-cta,
 .dark .glass-cta:hover,
 .dark .glass-cta:active {
+  border: 1px solid rgba(250, 246, 239, 0.35);
   background: rgba(110, 113, 98, 0.5);
-  background-image: none;
+  background-image: linear-gradient(
+    165deg,
+    rgba(250, 246, 239, 0.18) 0%,
+    rgba(110, 113, 98, 0.4) 45%,
+    rgba(110, 113, 98, 0.58) 100%
+  );
   color: #faf6ef;
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
+    0 1px 3px 0 rgba(255, 255, 255, 0.28) inset,
+    0 -1px 2px 0 rgba(18, 26, 42, 0.35) inset,
+    0 0 0 1px rgba(250, 246, 239, 0.12),
     0 8px 22px rgba(18, 26, 42, 0.55);
 }
 
 .dark .glass-cta:hover {
   background: rgba(110, 113, 98, 0.58);
+  border-color: rgba(250, 246, 239, 0.45);
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
+    0 1px 3px 0 rgba(255, 255, 255, 0.35) inset,
+    0 -1px 2px 0 rgba(18, 26, 42, 0.3) inset,
+    0 0 0 1px rgba(250, 246, 239, 0.18),
     0 10px 26px rgba(18, 26, 42, 0.65);
 }
 
 .dark .glass-cta:active {
   box-shadow:
     0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
+    0 1px 2px 0 rgba(18, 26, 42, 0.4) inset,
+    0 0 0 1px rgba(250, 246, 239, 0.1),
     0 4px 14px rgba(18, 26, 42, 0.45);
 }
 
@@ -387,43 +354,58 @@
   outline-offset: 3px;
 }
 
-/* Frosted white glass (hiring / quiet CTAs) — exact fill + glass rim + under-shadow */
+/* Frosted white glass — readable edge on cream + under-shadow */
 .glass-cta.frost-white,
 .glass-cta.frost-white:hover,
 .glass-cta.frost-white:active,
 .glass-cta.glass-cta-quiet,
 .glass-cta.glass-cta-quiet:hover,
 .glass-cta.glass-cta-quiet:active {
-  border: 0;
+  border: 1px solid rgba(255, 253, 249, 0.85);
   border-radius: 50px;
-  background: rgba(255, 255, 255, 0.08);
-  background-image: none;
+  background: rgba(255, 253, 249, 0.38);
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.72) 0%,
+    rgba(250, 246, 239, 0.42) 52%,
+    rgba(243, 238, 230, 0.28) 100%
+  );
   color: #1e293c;
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
-    0 8px 22px rgba(217, 205, 184, 0.7);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  backdrop-filter: blur(14px) saturate(140%);
+    0 1px 3px 0 rgba(255, 255, 255, 0.55) inset,
+    0 -1px 2px 0 rgba(217, 205, 184, 0.35) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.35),
+    0 8px 22px rgba(217, 205, 184, 0.75);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
 }
 
 .glass-cta.frost-white:hover,
 .glass-cta.glass-cta-quiet:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 253, 249, 0.5);
+  background-image: linear-gradient(
+    165deg,
+    rgba(255, 253, 249, 0.85) 0%,
+    rgba(250, 246, 239, 0.52) 52%,
+    rgba(243, 238, 230, 0.36) 100%
+  );
+  border-color: rgba(255, 253, 249, 0.95);
   transform: translateY(-1px);
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
-    0 10px 26px rgba(217, 205, 184, 0.8);
+    0 1px 3px 0 rgba(255, 255, 255, 0.7) inset,
+    0 -1px 2px 0 rgba(217, 205, 184, 0.28) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.45),
+    0 10px 26px rgba(217, 205, 184, 0.85);
 }
 
 .glass-cta.frost-white:active,
 .glass-cta.glass-cta-quiet:active {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 253, 249, 0.38);
   transform: translateY(0);
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
+    0 1px 3px 0 rgba(255, 255, 255, 0.4) inset,
+    0 1px 2px 0 rgba(217, 205, 184, 0.4) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.28),
     0 4px 14px rgba(217, 205, 184, 0.55);
 }
 
@@ -433,21 +415,30 @@
 .dark .glass-cta.glass-cta-quiet,
 .dark .glass-cta.glass-cta-quiet:hover,
 .dark .glass-cta.glass-cta-quiet:active {
-  background: rgba(255, 255, 255, 0.08);
-  background-image: none;
+  border: 1px solid rgba(250, 246, 239, 0.32);
+  background: rgba(255, 255, 255, 0.1);
+  background-image: linear-gradient(
+    165deg,
+    rgba(250, 246, 239, 0.16) 0%,
+    rgba(61, 78, 108, 0.35) 50%,
+    rgba(49, 65, 90, 0.45) 100%
+  );
   color: #faf6ef;
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
+    0 1px 3px 0 rgba(255, 255, 255, 0.28) inset,
+    0 -1px 2px 0 rgba(18, 26, 42, 0.4) inset,
+    0 0 0 1px rgba(250, 246, 239, 0.14),
     0 8px 22px rgba(18, 26, 42, 0.55);
 }
 
 .dark .glass-cta.frost-white:hover,
 .dark .glass-cta.glass-cta-quiet:hover {
   background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(250, 246, 239, 0.42);
   box-shadow:
-    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
+    0 1px 3px 0 rgba(255, 255, 255, 0.35) inset,
+    0 -1px 2px 0 rgba(18, 26, 42, 0.35) inset,
+    0 0 0 1px rgba(250, 246, 239, 0.2),
     0 10px 26px rgba(18, 26, 42, 0.65);
 }
 
@@ -455,11 +446,11 @@
 .dark .glass-cta.glass-cta-quiet:active {
   box-shadow:
     0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
-    0 0 8px 0 rgba(255, 255, 255, 0.18),
+    0 1px 2px 0 rgba(18, 26, 42, 0.45) inset,
+    0 0 0 1px rgba(250, 246, 239, 0.1),
     0 4px 14px rgba(18, 26, 42, 0.45);
 }
 
-/* Logo: liquid-glass fill clipped to the mark (navy glass on cream, cream glass on navy). */
 .brand-logo-glass {
   display: inline-block;
   height: 3rem;
@@ -885,45 +876,10 @@
   box-shadow: 0 4px 24px rgba(18, 26, 42, 0.45);
 }
 
-@keyframes topo-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes topo-pulse {
-  0% {
-    opacity: 0.42;
-  }
-  100% {
-    opacity: 0.62;
-  }
-}
-
-@keyframes topo-drift {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100% {
-    transform: translate3d(-2.5%, 1.5%, 0) scale(1.03);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html,
   body {
     animation: none;
-  }
-
-  .page-topo__line,
-  .page-topo__drift {
-    animation: none;
-  }
-
-  .page-topo__line {
-    stroke-dasharray: none;
-    stroke-dashoffset: 0;
-    opacity: 0.5;
   }
 
   .glass-cta,
