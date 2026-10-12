@@ -138,15 +138,33 @@
   }
 
   body {
+    min-height: 100vh;
     background-color: #faf6ef;
+    /* Slow mesh: warm cream, pale stone, muted sage at low opacity for legibility */
     background-image:
-      radial-gradient(ellipse 90% 70% at 12% 8%, rgba(255, 253, 249, 0.95), transparent 62%),
-      radial-gradient(ellipse 80% 65% at 88% 92%, rgba(217, 205, 184, 0.55), transparent 58%),
-      radial-gradient(ellipse 70% 55% at 70% 30%, rgba(243, 238, 230, 0.85), transparent 60%);
+      radial-gradient(ellipse 75% 60% at 18% 12%, rgba(255, 253, 249, 0.92), transparent 58%),
+      radial-gradient(ellipse 70% 55% at 82% 18%, rgba(228, 217, 200, 0.42), transparent 55%),
+      radial-gradient(ellipse 65% 50% at 72% 72%, rgba(121, 128, 105, 0.12), transparent 52%),
+      radial-gradient(ellipse 80% 60% at 22% 78%, rgba(217, 205, 184, 0.38), transparent 58%),
+      radial-gradient(ellipse 55% 45% at 48% 42%, rgba(243, 238, 230, 0.7), transparent 50%),
+      radial-gradient(ellipse 50% 40% at 58% 88%, rgba(110, 113, 98, 0.08), transparent 48%);
     background-repeat: no-repeat;
-    background-size: 160% 160%, 150% 150%, 170% 170%;
-    background-position: 0% 0%, 100% 100%, 40% 30%;
-    animation: palette-wash 56s ease-in-out infinite alternate;
+    background-attachment: fixed;
+    background-size:
+      140% 140%,
+      150% 150%,
+      160% 160%,
+      145% 145%,
+      130% 130%,
+      155% 155%;
+    background-position:
+      0% 0%,
+      100% 0%,
+      85% 80%,
+      10% 100%,
+      45% 40%,
+      60% 95%;
+    animation: mesh-drift 96s ease-in-out infinite alternate;
     color: var(--foreground);
     font-family: var(--font-body);
     font-size: 16px;
@@ -156,10 +174,14 @@
 
   html.dark body {
     background-color: #1e293c;
+    /* Navy base with soft sage + pale stone washes; greens stay very low opacity */
     background-image:
-      radial-gradient(ellipse 90% 70% at 10% 12%, rgba(61, 78, 108, 0.55), transparent 62%),
-      radial-gradient(ellipse 75% 60% at 90% 8%, rgba(49, 65, 90, 0.4), transparent 58%),
-      radial-gradient(ellipse 80% 65% at 72% 88%, rgba(18, 26, 42, 0.65), transparent 60%);
+      radial-gradient(ellipse 75% 60% at 16% 14%, rgba(61, 78, 108, 0.5), transparent 58%),
+      radial-gradient(ellipse 70% 55% at 84% 16%, rgba(209, 214, 221, 0.08), transparent 55%),
+      radial-gradient(ellipse 65% 50% at 70% 74%, rgba(121, 128, 105, 0.1), transparent 52%),
+      radial-gradient(ellipse 80% 60% at 20% 82%, rgba(49, 65, 90, 0.55), transparent 58%),
+      radial-gradient(ellipse 55% 45% at 48% 44%, rgba(30, 41, 60, 0.35), transparent 50%),
+      radial-gradient(ellipse 50% 40% at 58% 90%, rgba(110, 113, 98, 0.07), transparent 48%);
   }
 
   h1,
@@ -238,88 +260,47 @@
   }
 }
 
-/* Glass CTAs: frosted plate with rim light, emboss, and soft lift.
-   Light theme stays cream/beige glass; dark stays navy glass. Sage tint is the brand fill. */
+/* Glass CTAs: green glass plate + frosted white glass. Exact fill/shadow from brand. */
 .glass-cta,
 .glass-cta:hover,
 .glass-cta:active {
-  border: 1px solid rgba(255, 253, 249, 0.72);
-  background-image: linear-gradient(
-    165deg,
-    rgba(255, 253, 249, 0.55) 0%,
-    color-mix(in srgb, #798069 42%, transparent) 40%,
-    color-mix(in srgb, #798069 58%, transparent) 100%
-  );
-  background-color: color-mix(in srgb, #798069 40%, transparent);
+  border: 0;
+  border-radius: 50px;
+  background: rgba(110, 113, 98, 0.5);
+  background-image: none;
   color: #1e293c;
   text-decoration: none;
-  transform: translateY(-2px);
   box-shadow:
-    inset 0 1.5px 0 rgba(255, 253, 249, 0.88),
-    inset 1px 0 0 rgba(255, 253, 249, 0.35),
-    inset 0 -1px 0 rgba(122, 108, 90, 0.28),
-    0 1px 0 rgba(255, 253, 249, 0.45),
-    0 8px 26px rgba(217, 205, 184, 0.75);
-  -webkit-backdrop-filter: blur(18px) saturate(170%);
-  backdrop-filter: blur(18px) saturate(170%);
+    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
+    0 0 8px 0 rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 
 .glass-cta:hover {
-  background-image: linear-gradient(
-    165deg,
-    rgba(255, 253, 249, 0.62) 0%,
-    color-mix(in srgb, #798069 48%, transparent) 40%,
-    color-mix(in srgb, #798069 64%, transparent) 100%
-  );
-  background-color: color-mix(in srgb, #798069 48%, transparent);
-  transform: translateY(-4px);
-  box-shadow:
-    inset 0 1.5px 0 rgba(255, 253, 249, 0.95),
-    inset 1px 0 0 rgba(255, 253, 249, 0.4),
-    inset 0 -1px 0 rgba(122, 108, 90, 0.24),
-    0 1px 0 rgba(255, 253, 249, 0.5),
-    0 10px 30px rgba(217, 205, 184, 0.85);
+  background: rgba(110, 113, 98, 0.58);
+  transform: translateY(-1px);
 }
 
 .glass-cta:active {
+  background: rgba(110, 113, 98, 0.5);
   transform: translateY(0);
-  box-shadow:
-    inset 0 1px 2px rgba(122, 108, 90, 0.28),
-    inset 0 -1px 0 rgba(255, 253, 249, 0.35),
-    0 2px 14px rgba(217, 205, 184, 0.5);
 }
 
 .dark .glass-cta,
 .dark .glass-cta:hover,
 .dark .glass-cta:active {
-  border: 1px solid rgba(250, 246, 239, 0.22);
-  background-image: linear-gradient(
-    165deg,
-    rgba(250, 246, 239, 0.14) 0%,
-    color-mix(in srgb, #798069 48%, transparent) 45%,
-    color-mix(in srgb, #31415a 70%, transparent) 100%
-  );
-  background-color: color-mix(in srgb, #31415a 55%, transparent);
+  background: rgba(110, 113, 98, 0.5);
+  background-image: none;
   color: #faf6ef;
   box-shadow:
-    inset 0 1px 0 rgba(250, 246, 239, 0.28),
-    inset 0 -1px 0 rgba(18, 26, 42, 0.55),
-    0 1px 0 rgba(250, 246, 239, 0.08),
-    0 6px 24px rgba(18, 26, 42, 0.55);
+    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
+    0 0 8px 0 rgba(255, 255, 255, 0.18);
 }
 
 .dark .glass-cta:hover {
-  background-image: linear-gradient(
-    165deg,
-    rgba(250, 246, 239, 0.18) 0%,
-    color-mix(in srgb, #798069 54%, transparent) 45%,
-    color-mix(in srgb, #3d4e6c 72%, transparent) 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(250, 246, 239, 0.34),
-    inset 0 -1px 0 rgba(18, 26, 42, 0.5),
-    0 1px 0 rgba(250, 246, 239, 0.1),
-    0 8px 28px rgba(18, 26, 42, 0.62);
+  background: rgba(110, 113, 98, 0.58);
 }
 
 .skip-link {
@@ -358,80 +339,54 @@
   outline-offset: 3px;
 }
 
-/* Hiring choice: cream frosted glass on light, lighter navy glass on dark. */
+/* Frosted white glass (hiring / quiet CTAs) — exact fill + shared glass rim light */
 .glass-cta.frost-white,
 .glass-cta.frost-white:hover,
-.glass-cta.frost-white:active {
-  border: 1px solid rgba(255, 253, 249, 0.7);
-  background-image: linear-gradient(
-    165deg,
-    rgba(255, 253, 249, 0.88) 0%,
-    rgba(250, 246, 239, 0.55) 52%,
-    rgba(243, 238, 230, 0.42) 100%
-  );
-  background-color: rgba(255, 253, 249, 0.55);
+.glass-cta.frost-white:active,
+.glass-cta.glass-cta-quiet,
+.glass-cta.glass-cta-quiet:hover,
+.glass-cta.glass-cta-quiet:active {
+  border: 0;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.08);
+  background-image: none;
   color: #1e293c;
   box-shadow:
-    inset 0 1px 0 rgba(255, 253, 249, 0.95),
-    inset 0 -1px 0 rgba(217, 205, 184, 0.35),
-    0 1px 0 rgba(255, 253, 249, 0.45),
-    0 6px 22px rgba(217, 205, 184, 0.7);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  backdrop-filter: blur(16px) saturate(160%);
+    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
+    0 0 8px 0 rgba(255, 255, 255, 0.18);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
 }
 
-.glass-cta.frost-white:hover {
-  background-image: linear-gradient(
-    165deg,
-    rgba(255, 253, 249, 0.95) 0%,
-    rgba(250, 246, 239, 0.62) 52%,
-    rgba(243, 238, 230, 0.48) 100%
-  );
-  transform: translateY(-4px);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 253, 249, 1),
-    inset 0 -1px 0 rgba(217, 205, 184, 0.3),
-    0 1px 0 rgba(255, 253, 249, 0.5),
-    0 8px 28px rgba(217, 205, 184, 0.8);
+.glass-cta.frost-white:hover,
+.glass-cta.glass-cta-quiet:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
 }
 
-.glass-cta.frost-white:active {
+.glass-cta.frost-white:active,
+.glass-cta.glass-cta-quiet:active {
+  background: rgba(255, 255, 255, 0.08);
   transform: translateY(0);
-  box-shadow:
-    inset 0 1px 2px rgba(217, 205, 184, 0.45),
-    inset 0 -1px 0 rgba(255, 253, 249, 0.5),
-    0 2px 14px rgba(217, 205, 184, 0.5);
 }
 
 .dark .glass-cta.frost-white,
 .dark .glass-cta.frost-white:hover,
-.dark .glass-cta.frost-white:active {
-  border: 1px solid rgba(250, 246, 239, 0.2);
-  background-image: linear-gradient(
-    165deg,
-    rgba(250, 246, 239, 0.12) 0%,
-    rgba(61, 78, 108, 0.55) 48%,
-    rgba(49, 65, 90, 0.72) 100%
-  );
-  background-color: rgba(49, 65, 90, 0.55);
+.dark .glass-cta.frost-white:active,
+.dark .glass-cta.glass-cta-quiet,
+.dark .glass-cta.glass-cta-quiet:hover,
+.dark .glass-cta.glass-cta-quiet:active {
+  background: rgba(255, 255, 255, 0.08);
+  background-image: none;
   color: #faf6ef;
   box-shadow:
-    inset 0 1px 0 rgba(250, 246, 239, 0.26),
-    inset 0 -1px 0 rgba(18, 26, 42, 0.55),
-    0 1px 0 rgba(250, 246, 239, 0.08),
-    0 6px 24px rgba(18, 26, 42, 0.55);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  backdrop-filter: blur(16px) saturate(160%);
+    0 1px 3px 0 rgba(255, 255, 255, 0.22) inset,
+    0 0 8px 0 rgba(255, 255, 255, 0.18);
 }
 
-.dark .glass-cta.frost-white:hover {
-  background-image: linear-gradient(
-    165deg,
-    rgba(250, 246, 239, 0.16) 0%,
-    rgba(61, 78, 108, 0.62) 48%,
-    rgba(61, 78, 108, 0.78) 100%
-  );
-  background-color: rgba(61, 78, 108, 0.62);
+.dark .glass-cta.frost-white:hover,
+.dark .glass-cta.glass-cta-quiet:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 
 /* Logo: liquid-glass fill clipped to the mark (navy glass on cream, cream glass on navy). */
@@ -847,23 +802,46 @@
 }
 
 .site-header {
-  background-color: #faf6ef;
+  background-color: rgba(250, 246, 239, 0.72);
   border-bottom-color: #e4d9c8;
-  box-shadow: 0 4px 24px rgba(217, 205, 184, 0.55);
+  box-shadow: 0 4px 24px rgba(217, 205, 184, 0.35);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
 }
 
 .dark .site-header {
-  background-color: #1e293c;
+  background-color: rgba(30, 41, 60, 0.72);
   border-bottom-color: #31415a;
   box-shadow: 0 4px 24px rgba(18, 26, 42, 0.45);
 }
 
-@keyframes palette-wash {
+@keyframes mesh-drift {
   0% {
-    background-position: 0% 0%, 100% 100%, 40% 30%;
+    background-position:
+      0% 0%,
+      100% 0%,
+      85% 80%,
+      10% 100%,
+      45% 40%,
+      60% 95%;
+  }
+  50% {
+    background-position:
+      28% 18%,
+      72% 22%,
+      62% 58%,
+      24% 72%,
+      52% 48%,
+      48% 78%;
   }
   100% {
-    background-position: 80% 60%, 10% 20%, 70% 80%;
+    background-position:
+      55% 40%,
+      20% 55%,
+      35% 20%,
+      80% 30%,
+      30% 70%,
+      75% 50%;
   }
 }
 
@@ -879,6 +857,9 @@
   .glass-cta.frost-white,
   .glass-cta.frost-white:hover,
   .glass-cta.frost-white:active,
+  .glass-cta.glass-cta-quiet,
+  .glass-cta.glass-cta-quiet:hover,
+  .glass-cta.glass-cta-quiet:active,
   .theme-glass-toggle__track {
     transform: none;
     transition: none;
