@@ -525,10 +525,15 @@
 }
 
 .theme-glass-toggle__track {
+  /* 22×38 border-box → 16×32 content; thumb must be ≤16 or flex will squash it oval */
+  --toggle-thumb: 16px;
+  --toggle-travel: 16px;
   position: relative;
+  box-sizing: border-box;
   display: inline-flex;
   height: 22px;
   width: 38px;
+  flex-shrink: 0;
   align-items: center;
   padding: 2px;
   border-radius: 999px;
@@ -558,22 +563,20 @@
 }
 
 .theme-glass-toggle__thumb {
+  box-sizing: border-box;
   display: block;
-  height: 18px;
-  width: 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 253, 249, 0.65);
-  background-image: linear-gradient(
-    165deg,
-    rgba(255, 253, 249, 0.55) 0%,
-    color-mix(in srgb, #798069 58%, transparent) 42%,
-    color-mix(in srgb, #798069 82%, transparent) 100%
-  );
+  flex: 0 0 var(--toggle-thumb);
+  width: var(--toggle-thumb);
+  height: var(--toggle-thumb);
+  min-width: var(--toggle-thumb);
+  min-height: var(--toggle-thumb);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  /* Flat sage disc on light — no cream/white rim or inset (those read as a deformed halo) */
+  border: 1px solid #6e7162;
   background-color: #798069;
-  box-shadow:
-    inset 0 1.5px 0 rgba(255, 253, 249, 0.75),
-    inset 0 -1px 0 rgba(30, 41, 60, 0.22),
-    0 2px 8px rgba(217, 205, 184, 0.75);
+  background-image: linear-gradient(180deg, #7f8672 0%, #798069 55%, #72785f 100%);
+  box-shadow: 0 1px 2px rgba(122, 108, 90, 0.22);
 }
 
 .dark .theme-glass-toggle__track {
@@ -599,18 +602,18 @@
 }
 
 .dark .theme-glass-toggle__thumb {
-  border: 1px solid rgba(250, 246, 239, 0.28);
+  border: 1px solid rgba(250, 246, 239, 0.22);
+  background-color: #798069;
   background-image: linear-gradient(
     165deg,
-    rgba(250, 246, 239, 0.28) 0%,
-    color-mix(in srgb, #798069 62%, transparent) 45%,
-    color-mix(in srgb, #798069 88%, transparent) 100%
+    rgba(250, 246, 239, 0.22) 0%,
+    #798069 45%,
+    #6e7162 100%
   );
-  background-color: #798069;
   box-shadow:
-    inset 0 1.5px 0 rgba(250, 246, 239, 0.35),
-    inset 0 -1px 0 rgba(18, 26, 42, 0.45),
-    0 2px 8px rgba(18, 26, 42, 0.65);
+    inset 0 1px 0 rgba(250, 246, 239, 0.28),
+    inset 0 -1px 0 rgba(18, 26, 42, 0.4),
+    0 1px 3px rgba(18, 26, 42, 0.55);
 }
 
 .nested-radius {
