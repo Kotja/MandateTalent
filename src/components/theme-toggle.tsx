@@ -53,7 +53,9 @@ export function ThemeToggle() {
         <span
           className="theme-glass-toggle__thumb"
           style={{
-            transform: dark ? "translateX(16px)" : "translateX(0px)",
+            transform: dark
+              ? "translateX(var(--toggle-travel))"
+              : "translateX(0px)",
             transition: reduceMotion ? "none" : "transform 160ms ease",
           }}
         />
