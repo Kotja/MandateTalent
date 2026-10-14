@@ -888,6 +888,8 @@
   overflow: hidden;
   --glow-x: 58%;
   --glow-y: 28%;
+  --tail-x: 58%;
+  --tail-y: 28%;
 }
 
 .page-atmosphere__glow {
@@ -927,6 +929,33 @@
       rgba(121, 128, 105, 0.08) 45%,
       transparent 72%
     );
+}
+
+/* Postponed cursor-tail — softer, smaller, lags ~420ms behind the pointer. */
+.page-atmosphere__tail {
+  position: absolute;
+  inset: -10%;
+  background: radial-gradient(
+    30% 28% at var(--tail-x) var(--tail-y),
+    rgba(255, 253, 249, 0.62) 0%,
+    rgba(245, 235, 218, 0.32) 34%,
+    rgba(217, 205, 184, 0.12) 58%,
+    transparent 78%
+  );
+  filter: blur(30px);
+  opacity: 0.92;
+  will-change: background;
+}
+
+.dark .page-atmosphere__tail {
+  background: radial-gradient(
+    30% 28% at var(--tail-x) var(--tail-y),
+    rgba(100, 122, 158, 0.58) 0%,
+    rgba(61, 78, 108, 0.3) 36%,
+    rgba(49, 65, 90, 0.12) 60%,
+    transparent 80%
+  );
+  opacity: 0.95;
 }
 
 .page-atmosphere__grain {
@@ -973,6 +1002,10 @@
   .page-atmosphere__glow {
     animation: none;
     filter: blur(22px);
+  }
+
+  .page-atmosphere__tail {
+    opacity: 0;
   }
 
   .glass-cta,
