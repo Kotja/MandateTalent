@@ -104,10 +104,11 @@ export function TactileGrain() {
       const dy = headY - tipY;
       const dist = Math.hypot(dx, dy);
       if (dist > 0.35) {
-        angleDeg += (((Math.atan2(dy, dx) * 180) / Math.PI) - angleDeg) * 0.12;
-        length += (Math.min(42, Math.max(14, dist * 1.35)) - length) * 0.1;
+        angleDeg += (((Math.atan2(dy, dx) * 180) / Math.PI) - angleDeg) * 0.16;
+        // Keep the trail long while moving so it reads as a comet, not a disc.
+        length += (Math.min(58, Math.max(22, dist * 1.85)) - length) * 0.14;
       } else {
-        length += (14 - length) * 0.06;
+        length += (20 - length) * 0.05;
       }
 
       apply();
