@@ -876,35 +876,6 @@
   box-shadow: 0 4px 24px rgba(18, 26, 42, 0.45);
 }
 
-/*
- * Tactile grain only — no ambient glow, comet trail, or sparkle ribbon.
- */
-.page-atmosphere {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.page-atmosphere__grain {
-  position: absolute;
-  inset: 0;
-  opacity: 0.58;
-  mix-blend-mode: multiply;
-  /* Very fine fractal noise, tiled — static paper texture */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.05' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.72'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 160px 160px;
-}
-
-.dark .page-atmosphere__grain {
-  /* multiply only — soft-light lightened noise into a cool wash/blob */
-  opacity: 0.5;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
-}
-
 @media (prefers-reduced-motion: reduce) {
   html,
   body {
