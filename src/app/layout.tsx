@@ -22,7 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var s=localStorage.getItem("mandate-theme");var d=s==="dark";if(d)document.documentElement.classList.add("dark");document.documentElement.style.colorScheme=d?"dark":"light";}catch(e){}})();`,
+            __html: `(function(){var k="mandate-theme";function apply(d){document.documentElement.classList.toggle("dark",d);document.documentElement.style.colorScheme=d?"dark":"light";try{localStorage.setItem(k,d?"dark":"light")}catch(e){}var b=document.querySelector("[data-theme-toggle]");if(b)b.setAttribute("aria-pressed",d?"true":"false")}function preferred(){try{var s=localStorage.getItem(k);if(s==="dark")return true;if(s==="light")return false}catch(e){}return false}apply(preferred());document.addEventListener("click",function(e){var t=e.target&&e.target.closest&&e.target.closest("[data-theme-toggle]");if(!t)return;e.preventDefault();apply(!document.documentElement.classList.contains("dark"))},true);})();`,
           }}
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
