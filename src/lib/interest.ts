@@ -14,8 +14,8 @@ export const hiringRoles = [
 
 export const companySizes = [
   { value: "under-50", label: "Under 50 people" },
-  { value: "50-200", label: "50–200 people" },
-  { value: "200-500", label: "200–500 people" },
+  { value: "50-200", label: "50-200 people" },
+  { value: "200-500", label: "200-500 people" },
   { value: "over-500", label: "Over 500 people" },
 ] as const;
 

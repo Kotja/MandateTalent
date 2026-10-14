@@ -7,9 +7,10 @@
   },
   "scripts": {
     "dev": "next dev",
+    "local": "next dev --hostname 127.0.0.1 --port 45371",
     "build": "next build",
     "build:pages": "STATIC_EXPORT=true next build",
-    "start": "next start",
+    "start": "next start --hostname 127.0.0.1 --port 45371",
     "lint": "eslint"
   },
   "dependencies": {
