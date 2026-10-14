@@ -165,33 +165,16 @@ export function TactileGrain() {
 
       const life = Math.min(1, Math.max(0.4, 1 - (now - head.t) / 500));
 
-      // Wide soft bloom → mid → bright core. Tip stays soft (not a hard wedge).
+      // Soft bloom layers only — no hard laser core, no big head disc.
       if (isDark) {
-        fillRibbon(smoothed, 56, 10, `rgba(100, 140, 200, ${0.22 * life})`, 36);
-        fillRibbon(smoothed, 34, 6, `rgba(170, 200, 240, ${0.5 * life})`, 18);
-        fillRibbon(smoothed, 16, 3, `rgba(240, 246, 255, ${0.85 * life})`, 6);
+        fillRibbon(smoothed, 72, 18, `rgba(90, 130, 190, ${0.2 * life})`, 42);
+        fillRibbon(smoothed, 48, 12, `rgba(150, 185, 230, ${0.38 * life})`, 28);
+        fillRibbon(smoothed, 26, 6, `rgba(220, 232, 255, ${0.55 * life})`, 14);
       } else {
-        fillRibbon(smoothed, 60, 12, `rgba(255, 220, 170, ${0.4 * life})`, 34);
-        fillRibbon(smoothed, 36, 7, `rgba(255, 242, 210, ${0.7 * life})`, 16);
-        fillRibbon(smoothed, 16, 3, `rgba(255, 252, 245, ${0.92 * life})`, 5);
+        fillRibbon(smoothed, 78, 20, `rgba(255, 210, 150, ${0.35 * life})`, 40);
+        fillRibbon(smoothed, 50, 12, `rgba(255, 236, 195, ${0.55 * life})`, 26);
+        fillRibbon(smoothed, 28, 7, `rgba(255, 250, 235, ${0.7 * life})`, 12);
       }
-
-      // Small head — subordinate to the long ribbon
-      const r = 14;
-      const g = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, r * 1.8);
-      if (isDark) {
-        g.addColorStop(0, `rgba(255, 255, 255, ${0.85 * life})`);
-        g.addColorStop(0.5, `rgba(180, 205, 240, ${0.28 * life})`);
-        g.addColorStop(1, "rgba(180, 205, 240, 0)");
-      } else {
-        g.addColorStop(0, `rgba(255, 255, 252, ${0.9 * life})`);
-        g.addColorStop(0.5, `rgba(255, 235, 190, ${0.35 * life})`);
-        g.addColorStop(1, "rgba(255, 235, 190, 0)");
-      }
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(head.x, head.y, r * 1.8, 0, Math.PI * 2);
-      ctx.fill();
     };
 
     const tick = (now: number) => {
