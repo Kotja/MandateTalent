@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { GlassCtaTilt } from "@/components/glass-cta-tilt";
 import { TactileGrain } from "@/components/tactile-grain";
 import "./globals.css";
 
@@ -43,7 +42,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-full flex-col font-sans">
         <TactileGrain />
-        <GlassCtaTilt />
         <div className="page-shell relative z-[1] flex min-h-full flex-1 flex-col">
           {children}
         </div>

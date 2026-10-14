@@ -58,12 +58,32 @@ export function GlassCtaTilt() {
       });
     }
 
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    // Defer past selective hydration of the page segment so we never write
+    // inline --glass-* before React commits the CTAs.
+    let raf1 = 0;
+    let raf2 = 0;
+    let timer = 0;
+    let started = false;
+
+    const start = () => {
+      if (started) return;
+      started = true;
+      update();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+    };
+
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        timer = window.setTimeout(start, 0);
+      });
+    });
 
     return () => {
       mq.removeEventListener("change", onMotion);
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      window.clearTimeout(timer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };

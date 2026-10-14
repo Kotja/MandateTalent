@@ -1,4 +1,5 @@
 import { buttonVariants } from "@/components/ui/button";
+import { GlassCtaTilt } from "@/components/glass-cta-tilt";
 import { Icon } from "@/components/icon";
 import { AudienceButtons, InterestForm } from "@/components/interest-form";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -29,6 +30,8 @@ function BrandLogo() {
 export default function Home() {
   return (
     <>
+      {/* After page hydrate — layout-level effects mutate CTAs too early under selective hydration */}
+      <GlassCtaTilt />
       <header id="top" className="site-header sticky top-0 z-10 border-b">
         <div className="mx-auto flex h-16 w-full max-w-[1080px] flex-nowrap items-center gap-4 px-5 sm:px-6">
           <a href="#top" data-plain className="inline-flex shrink-0 items-center">
