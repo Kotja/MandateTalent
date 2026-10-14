@@ -2,194 +2,246 @@
 
 import { useEffect, useRef, type CSSProperties } from "react";
 
+type Pt = { x: number; y: number; t: number };
+
 /**
- * Atmosphere: fine grain + soft ambient wash + comet-like cursor trail.
- * Head eases toward the pointer; the bright streak lags and stretches behind.
+ * Canvas comet: one continuous tapering ribbon along pointer history.
+ * Avoids per-segment round-cap “UFO stamps”.
  */
 export function TactileGrain() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const root = rootRef.current;
-    if (!root) return;
+    const canvas = canvasRef.current;
+    if (!root || !canvas) return;
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const points: Pt[] = [];
+    const MAX_AGE_MS = 1000;
+    const MAX_POINTS = 64;
 
-    // Soft ambient wash (not a hard UFO blob) — mild pointer ease.
-    let ambientTargetX = 58;
-    let ambientTargetY = 32;
-    let ambientX = 58;
-    let ambientY = 32;
-
-    // Comet head (near pointer) + mid + tip (postponed trail).
-    let headTargetX = 58;
-    let headTargetY = 32;
-    let headX = 58;
-    let headY = 32;
-    let midX = 52;
-    let midY = 36;
-    let tipX = 46;
-    let tipY = 40;
-    let angleDeg = -18;
-    let length = 18;
-
-    const history: { x: number; y: number; t: number }[] = [];
-    const MID_DELAY_MS = 160;
-    const TIP_DELAY_MS = 480;
+    let ambientX = 0.58;
+    let ambientY = 0.32;
+    let ambientTargetX = 0.58;
+    let ambientTargetY = 0.32;
     let raf = 0;
-    let lastMoveAt = 0;
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let isDark = false;
 
-    const apply = () => {
-      root.style.setProperty("--glow-x", `${ambientX}%`);
-      root.style.setProperty("--glow-y", `${ambientY}%`);
-      root.style.setProperty("--head-x", `${headX}%`);
-      root.style.setProperty("--head-y", `${headY}%`);
-      root.style.setProperty("--mid-x", `${midX}%`);
-      root.style.setProperty("--mid-y", `${midY}%`);
-      root.style.setProperty("--tip-x", `${tipX}%`);
-      root.style.setProperty("--tip-y", `${tipY}%`);
-      root.style.setProperty("--comet-angle", `${angleDeg}deg`);
-      root.style.setProperty("--comet-length", `${length}`);
-      root.style.setProperty(
-        "--comet-active",
-        performance.now() - lastMoveAt < 900 ? "1" : "0.55",
-      );
+    const readTheme = () => {
+      isDark = document.documentElement.classList.contains("dark");
     };
 
-    const pointerToField = (clientX: number, clientY: number) => {
-      const w = window.innerWidth || 1;
-      const h = window.innerHeight || 1;
-      const nx = (clientX / w) * 100;
-      const ny = (clientY / h) * 100;
-      return {
-        x: 50 + (nx - 50) * 0.72,
-        y: 48 + (ny - 48) * 0.62,
-      };
-    };
-
-    const sampleAt = (now: number, delayMs: number, fallbackX: number, fallbackY: number) => {
-      const want = now - delayMs;
-      while (history.length > 1 && history[1].t <= want) {
-        history.shift();
-      }
-      if (history.length === 0) return { x: fallbackX, y: fallbackY };
-      if (history.length === 1 || history[0].t >= want) {
-        return { x: history[0].x, y: history[0].y };
-      }
-      const a = history[0];
-      const b = history[1];
-      const span = b.t - a.t || 1;
-      const t = Math.min(1, Math.max(0, (want - a.t) / span));
-      return {
-        x: a.x + (b.x - a.x) * t,
-        y: a.y + (b.y - a.y) * t,
-      };
-    };
-
-    const tick = (now: number) => {
-      ambientX += (ambientTargetX - ambientX) * 0.03;
-      ambientY += (ambientTargetY - ambientY) * 0.03;
-
-      headX += (headTargetX - headX) * 0.14;
-      headY += (headTargetY - headY) * 0.14;
-
-      const midSample = sampleAt(now, MID_DELAY_MS, midX, midY);
-      const tipSample = sampleAt(now, TIP_DELAY_MS, tipX, tipY);
-      midX += (midSample.x - midX) * 0.1;
-      midY += (midSample.y - midY) * 0.1;
-      tipX += (tipSample.x - tipX) * 0.07;
-      tipY += (tipSample.y - tipY) * 0.07;
-
-      const dx = headX - tipX;
-      const dy = headY - tipY;
-      const dist = Math.hypot(dx, dy);
-      if (dist > 0.35) {
-        angleDeg += (((Math.atan2(dy, dx) * 180) / Math.PI) - angleDeg) * 0.16;
-        // Keep the trail long while moving so it reads as a comet, not a disc.
-        length += (Math.min(58, Math.max(22, dist * 1.85)) - length) * 0.14;
-      } else {
-        length += (20 - length) * 0.05;
-      }
-
-      apply();
-      raf = requestAnimationFrame(tick);
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.max(1, Math.floor(width * dpr));
+      canvas.height = Math.max(1, Math.floor(height * dpr));
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     const onMove = (event: PointerEvent) => {
       if (reduceMotion.matches) return;
-      const field = pointerToField(event.clientX, event.clientY);
-      lastMoveAt = performance.now();
-      headTargetX = field.x;
-      headTargetY = field.y;
-      // Ambient wash drifts gently with the pointer, not locked to it.
-      ambientTargetX = 50 + (field.x - 50) * 0.35;
-      ambientTargetY = 40 + (field.y - 40) * 0.28;
-      history.push({ x: field.x, y: field.y, t: lastMoveAt });
-      while (history.length > 96) history.shift();
+      const now = performance.now();
+      const x = event.clientX;
+      const y = event.clientY;
+
+      if (points.length === 0) {
+        // Seed a long starter trail so the first frames are already comet-shaped.
+        for (let i = 8; i >= 1; i--) {
+          points.push({
+            x: x - i * 28,
+            y: y + i * 10,
+            t: now - i * 70,
+          });
+        }
+      }
+
+      const last = points[points.length - 1];
+      if (last && Math.hypot(x - last.x, y - last.y) < 4) {
+        last.x = x;
+        last.y = y;
+        last.t = now;
+      } else {
+        points.push({ x, y, t: now });
+      }
+      while (points.length > MAX_POINTS) points.shift();
+
+      ambientTargetX = 0.5 + (x / Math.max(width, 1) - 0.5) * 0.22;
+      ambientTargetY = 0.42 + (y / Math.max(height, 1) - 0.5) * 0.18;
     };
 
-    apply();
+    const prune = (now: number) => {
+      while (points.length && now - points[0].t > MAX_AGE_MS) points.shift();
+    };
 
-    if (!reduceMotion.matches) {
+    /** Chaikin-ish smooth for a continuous curve */
+    const smooth = (pts: Pt[]): Pt[] => {
+      if (pts.length < 3) return pts;
+      const out: Pt[] = [pts[0]];
+      for (let i = 0; i < pts.length - 1; i++) {
+        const a = pts[i];
+        const b = pts[i + 1];
+        out.push({
+          x: a.x * 0.75 + b.x * 0.25,
+          y: a.y * 0.75 + b.y * 0.25,
+          t: a.t * 0.75 + b.t * 0.25,
+        });
+        out.push({
+          x: a.x * 0.25 + b.x * 0.75,
+          y: a.y * 0.25 + b.y * 0.75,
+          t: a.t * 0.25 + b.t * 0.75,
+        });
+      }
+      out.push(pts[pts.length - 1]);
+      return out;
+    };
+
+    const fillRibbon = (
+      pts: Pt[],
+      headWidth: number,
+      tipWidth: number,
+      fill: string,
+      blur: number,
+    ) => {
+      if (pts.length < 2) return;
+      const left: { x: number; y: number }[] = [];
+      const right: { x: number; y: number }[] = [];
+
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i];
+        const p0 = pts[Math.max(0, i - 1)];
+        const p1 = pts[Math.min(pts.length - 1, i + 1)];
+        let dx = p1.x - p0.x;
+        let dy = p1.y - p0.y;
+        const len = Math.hypot(dx, dy) || 1;
+        dx /= len;
+        dy /= len;
+        const nx = -dy;
+        const ny = dx;
+        const t = i / (pts.length - 1); // 0 tip → 1 head
+        const w = tipWidth + (headWidth - tipWidth) * (t * t);
+        left.push({ x: p.x + nx * w, y: p.y + ny * w });
+        right.push({ x: p.x - nx * w, y: p.y - ny * w });
+      }
+
+      ctx.save();
+      ctx.shadowBlur = blur;
+      ctx.shadowColor = fill;
+      ctx.fillStyle = fill;
+      ctx.beginPath();
+      ctx.moveTo(left[0].x, left[0].y);
+      for (let i = 1; i < left.length; i++) ctx.lineTo(left[i].x, left[i].y);
+      for (let i = right.length - 1; i >= 0; i--) {
+        ctx.lineTo(right[i].x, right[i].y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    };
+
+    const draw = (now: number) => {
+      ctx.clearRect(0, 0, width, height);
+      prune(now);
+      if (reduceMotion.matches || points.length < 2) return;
+
+      const head = points[points.length - 1];
+      // Only use real history — no artificial straight spike (that read as a searchlight).
+      if (points.length < 3) return;
+
+      const smoothed = smooth(smooth(points));
+      const tip = smoothed[0];
+      const travel = Math.hypot(head.x - tip.x, head.y - tip.y);
+      if (travel < 48) return; // wait until we have a real trail length
+
+      const life = Math.min(1, Math.max(0.4, 1 - (now - head.t) / 500));
+
+      // Wide soft bloom → mid → bright core. Tip stays soft (not a hard wedge).
+      if (isDark) {
+        fillRibbon(smoothed, 56, 10, `rgba(100, 140, 200, ${0.22 * life})`, 36);
+        fillRibbon(smoothed, 34, 6, `rgba(170, 200, 240, ${0.5 * life})`, 18);
+        fillRibbon(smoothed, 16, 3, `rgba(240, 246, 255, ${0.85 * life})`, 6);
+      } else {
+        fillRibbon(smoothed, 60, 12, `rgba(255, 220, 170, ${0.4 * life})`, 34);
+        fillRibbon(smoothed, 36, 7, `rgba(255, 242, 210, ${0.7 * life})`, 16);
+        fillRibbon(smoothed, 16, 3, `rgba(255, 252, 245, ${0.92 * life})`, 5);
+      }
+
+      // Small head — subordinate to the long ribbon
+      const r = 14;
+      const g = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, r * 1.8);
+      if (isDark) {
+        g.addColorStop(0, `rgba(255, 255, 255, ${0.85 * life})`);
+        g.addColorStop(0.5, `rgba(180, 205, 240, ${0.28 * life})`);
+        g.addColorStop(1, "rgba(180, 205, 240, 0)");
+      } else {
+        g.addColorStop(0, `rgba(255, 255, 252, ${0.9 * life})`);
+        g.addColorStop(0.5, `rgba(255, 235, 190, ${0.35 * life})`);
+        g.addColorStop(1, "rgba(255, 235, 190, 0)");
+      }
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(head.x, head.y, r * 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    const tick = (now: number) => {
+      ambientX += (ambientTargetX - ambientX) * 0.04;
+      ambientY += (ambientTargetY - ambientY) * 0.04;
+      root.style.setProperty("--glow-x", `${ambientX * 100}%`);
+      root.style.setProperty("--glow-y", `${ambientY * 100}%`);
+      readTheme();
+      draw(now);
       raf = requestAnimationFrame(tick);
-      window.addEventListener("pointermove", onMove, { passive: true });
-    }
+    };
+
+    const observer = new MutationObserver(readTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    resize();
+    readTheme();
+    window.addEventListener("resize", resize);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    if (!reduceMotion.matches) raf = requestAnimationFrame(tick);
 
     const onMotionChange = () => {
-      if (reduceMotion.matches) {
-        cancelAnimationFrame(raf);
-        ambientX = ambientTargetX = 58;
-        ambientY = ambientTargetY = 32;
-        headX = headTargetX = 58;
-        headY = headTargetY = 32;
-        midX = 52;
-        midY = 36;
-        tipX = 46;
-        tipY = 40;
-        history.length = 0;
-        apply();
-        window.removeEventListener("pointermove", onMove);
-      } else {
-        raf = requestAnimationFrame(tick);
-        window.addEventListener("pointermove", onMove, { passive: true });
-      }
+      cancelAnimationFrame(raf);
+      points.length = 0;
+      ctx.clearRect(0, 0, width, height);
+      if (!reduceMotion.matches) raf = requestAnimationFrame(tick);
     };
-
     reduceMotion.addEventListener("change", onMotionChange);
 
     return () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
       reduceMotion.removeEventListener("change", onMotionChange);
+      observer.disconnect();
     };
   }, []);
-
-  const initial = {
-    "--glow-x": "58%",
-    "--glow-y": "32%",
-    "--head-x": "58%",
-    "--head-y": "32%",
-    "--mid-x": "52%",
-    "--mid-y": "36%",
-    "--tip-x": "46%",
-    "--tip-y": "40%",
-    "--comet-angle": "-18deg",
-    "--comet-length": "18",
-    "--comet-active": "0.55",
-  } as CSSProperties;
 
   return (
     <div
       ref={rootRef}
       className="page-atmosphere"
       aria-hidden="true"
-      style={initial}
+      style={{ "--glow-x": "58%", "--glow-y": "32%" } as CSSProperties}
     >
       <div className="page-atmosphere__glow" />
-      <div className="page-atmosphere__comet">
-        <div className="page-atmosphere__comet-streak" />
-        <div className="page-atmosphere__comet-head" />
-      </div>
+      <canvas ref={canvasRef} className="page-atmosphere__comet-canvas" />
       <div className="page-atmosphere__grain" />
     </div>
   );

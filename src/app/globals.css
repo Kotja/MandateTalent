@@ -127,21 +127,21 @@
   html {
     @apply font-sans;
     /* Slightly deeper cream so the comet reads brighter */
-    background-color: #ebe3d4;
+    background-color: #ddd0b8;
     color: var(--foreground);
     color-scheme: light;
     scroll-behavior: smooth;
   }
 
   html.dark {
-    background-color: #121926;
+    background-color: #0c121c;
     color-scheme: dark;
   }
 
   body {
     position: relative;
     min-height: 100vh;
-    background-color: #ebe3d4;
+    background-color: #ddd0b8;
     background-image: none;
     color: var(--foreground);
     font-family: var(--font-body);
@@ -151,7 +151,7 @@
   }
 
   html.dark body {
-    background-color: #121926;
+    background-color: #0c121c;
   }
 
   h1,
@@ -890,169 +890,43 @@
   overflow: hidden;
   --glow-x: 58%;
   --glow-y: 32%;
-  --head-x: 58%;
-  --head-y: 32%;
-  --mid-x: 52%;
-  --mid-y: 36%;
-  --tip-x: 46%;
-  --tip-y: 40%;
-  --comet-angle: -18deg;
-  --comet-length: 18;
-  --comet-active: 0.55;
 }
 
-/* Wide soft wash — cream/sage spirit, deliberately unfocused */
+/* Barely-there ambient wash — gradient spirit without a disc hotspot */
 .page-atmosphere__glow {
   position: absolute;
-  inset: -28%;
+  inset: -40%;
   background:
     radial-gradient(
-      78% 68% at var(--glow-x) var(--glow-y),
-      rgba(255, 253, 249, 0.42) 0%,
-      rgba(245, 235, 218, 0.28) 32%,
-      rgba(217, 205, 184, 0.12) 58%,
-      transparent 82%
-    ),
-    radial-gradient(
-      52% 48% at calc(var(--glow-x) + 16%) calc(var(--glow-y) + 18%),
-      rgba(121, 128, 105, 0.12) 0%,
-      rgba(121, 128, 105, 0.04) 45%,
-      transparent 72%
+      110% 90% at var(--glow-x) var(--glow-y),
+      rgba(255, 253, 249, 0.12) 0%,
+      rgba(245, 235, 218, 0.06) 45%,
+      transparent 80%
     );
-  filter: blur(40px);
+  filter: blur(56px);
+  opacity: 0.55;
   transform-origin: center;
-  will-change: transform;
-  opacity: 0.85;
 }
 
 .dark .page-atmosphere__glow {
   background:
     radial-gradient(
-      78% 68% at var(--glow-x) var(--glow-y),
-      rgba(61, 78, 108, 0.38) 0%,
-      rgba(49, 65, 90, 0.22) 36%,
-      rgba(22, 31, 48, 0.08) 62%,
-      transparent 84%
-    ),
-    radial-gradient(
-      48% 44% at calc(var(--glow-x) + 12%) calc(var(--glow-y) + 16%),
-      rgba(121, 128, 105, 0.14) 0%,
-      rgba(121, 128, 105, 0.04) 48%,
-      transparent 74%
+      110% 90% at var(--glow-x) var(--glow-y),
+      rgba(61, 78, 108, 0.14) 0%,
+      rgba(49, 65, 90, 0.06) 48%,
+      transparent 82%
     );
-  opacity: 0.9;
+  opacity: 0.6;
 }
 
-.page-atmosphere__comet {
+/* Canvas comet ribbon — soft edges drawn in JS; no CSS blur (blur → UFO blob) */
+.page-atmosphere__comet-canvas {
   position: absolute;
   inset: 0;
-  opacity: calc(0.55 + 0.45 * var(--comet-active));
-  transition: opacity 280ms ease;
-}
-
-/* Elongated streak — comet body, oriented along motion (long & thin, not a disc) */
-.page-atmosphere__comet-streak {
-  position: absolute;
-  left: var(--head-x);
-  top: var(--head-y);
-  width: calc(var(--comet-length) * 2.4vmax);
-  height: 14vmax;
-  transform: translate(-8%, -50%) rotate(var(--comet-angle));
-  transform-origin: 8% 50%;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 253, 249, 0.98) 0%,
-    rgba(255, 248, 236, 0.78) 12%,
-    rgba(245, 232, 210, 0.48) 34%,
-    rgba(217, 205, 184, 0.2) 62%,
-    transparent 100%
-  );
-  border-radius: 999px;
-  filter: blur(22px);
-  will-change: transform, width;
+  width: 100%;
+  height: 100%;
+  display: block;
   opacity: 1;
-}
-
-.dark .page-atmosphere__comet-streak {
-  background: linear-gradient(
-    90deg,
-    rgba(230, 238, 255, 0.98) 0%,
-    rgba(150, 175, 215, 0.72) 14%,
-    rgba(90, 115, 155, 0.4) 38%,
-    rgba(49, 65, 90, 0.14) 68%,
-    transparent 100%
-  );
-  filter: blur(24px);
-}
-
-/* Compact bright tip — kept small so the streak carries the shape */
-.page-atmosphere__comet-head {
-  position: absolute;
-  left: var(--head-x);
-  top: var(--head-y);
-  width: 18vmax;
-  height: 18vmax;
-  transform: translate(-50%, -50%);
-  background:
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 253, 249, 1) 0%,
-      rgba(255, 248, 236, 0.55) 32%,
-      rgba(245, 232, 210, 0.12) 58%,
-      transparent 74%
-    );
-  filter: blur(16px);
-  opacity: 1;
-}
-
-.dark .page-atmosphere__comet-head {
-  background:
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(240, 246, 255, 0.95) 0%,
-      rgba(150, 175, 215, 0.5) 34%,
-      rgba(74, 92, 122, 0.12) 60%,
-      transparent 76%
-    );
-  opacity: 1;
-}
-
-/* Soft secondary bloom along mid/tip of the trail */
-.page-atmosphere__comet::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      26% 22% at var(--mid-x) var(--mid-y),
-      rgba(255, 250, 240, 0.45) 0%,
-      rgba(245, 232, 210, 0.16) 45%,
-      transparent 72%
-    ),
-    radial-gradient(
-      22% 18% at var(--tip-x) var(--tip-y),
-      rgba(245, 232, 210, 0.28) 0%,
-      rgba(217, 205, 184, 0.08) 50%,
-      transparent 75%
-    );
-  filter: blur(26px);
-  pointer-events: none;
-}
-
-.dark .page-atmosphere__comet::after {
-  background:
-    radial-gradient(
-      26% 22% at var(--mid-x) var(--mid-y),
-      rgba(150, 175, 215, 0.42) 0%,
-      rgba(74, 92, 122, 0.14) 48%,
-      transparent 74%
-    ),
-    radial-gradient(
-      22% 18% at var(--tip-x) var(--tip-y),
-      rgba(90, 110, 145, 0.28) 0%,
-      rgba(49, 65, 90, 0.08) 52%,
-      transparent 76%
-    );
 }
 
 .page-atmosphere__grain {
@@ -1101,8 +975,8 @@
     filter: blur(28px);
   }
 
-  .page-atmosphere__comet {
-    opacity: 0;
+  .page-atmosphere__comet-canvas {
+    display: none;
   }
 
   .glass-cta,
