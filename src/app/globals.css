@@ -231,71 +231,119 @@
 }
 
 /*
- * Crystal glass CTAs — reference pill glass (sage) + viewport tilt.
- * --glass-rx set by head script from position vs viewport center.
- * Above center → positive rx (see bottom edge); below → negative (see top).
+ * Crystal glass CTAs — thick 3D pills (reference fill) + viewport faces.
+ * --glass-rx / --glass-top / --glass-bot from head script vs mid-viewport:
+ *   above center → see bottom face; below center → see top face.
  */
 .glass-cta,
 .glass-cta:hover,
 .glass-cta:active,
 .glass-cta:focus-visible {
+  --glass-depth: 11px;
+  --glass-rx: 0deg;
+  --glass-top: 0;
+  --glass-bot: 0;
+  --glass-lift: 0px;
   position: relative;
-  isolation: isolate;
   overflow: visible;
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 50px;
   background: rgba(123, 129, 107, 0.45);
-  background-image: none;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(123, 129, 107, 0.08) 42%,
+    rgba(90, 96, 72, 0.18) 100%
+  );
   color: #faf6ef;
   text-decoration: none;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   box-shadow:
     inset 0 2px 5px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 4px rgba(60, 64, 50, 0.18),
     0 4px 15px rgba(123, 129, 107, 0.25);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  transform: perspective(900px) rotateX(var(--glass-rx, 0deg))
-    translateY(var(--glass-lift, 0px));
+  transform: perspective(720px) rotateX(var(--glass-rx))
+    translateY(var(--glass-lift)) translateZ(0);
   transform-style: preserve-3d;
   will-change: transform;
   transition:
-    transform 160ms ease,
+    transform 140ms linear,
     background-color 180ms ease,
     box-shadow 180ms ease,
     border-color 180ms ease;
 }
 
-/* Soft thickness lip that reads as the glass edge when tilted */
+/* Front face sits slightly forward so rim faces can show */
+.glass-cta > * {
+  position: relative;
+  z-index: 1;
+  transform: translateZ(0.5px);
+}
+
+/* TOP face — visible when button is below midline (looking down onto it) */
+.glass-cta::before {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 0;
+  height: var(--glass-depth);
+  border-radius: 999px 999px 40% 40%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(200, 210, 175, 0.45) 45%,
+    rgba(123, 129, 107, 0.55) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 0;
+  transform-origin: top center;
+  transform: rotateX(90deg) translateZ(0.5px);
+  opacity: calc(0.2 + var(--glass-top) * 0.85);
+  pointer-events: none;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.65);
+  backface-visibility: hidden;
+}
+
+/* BOTTOM face — visible when button is above midline (looking up at underside) */
 .glass-cta::after {
   content: "";
   position: absolute;
-  left: 10%;
-  right: 10%;
-  bottom: -2px;
-  height: 5px;
-  border-radius: 999px;
+  left: 4%;
+  right: 4%;
+  bottom: 0;
+  height: var(--glass-depth);
+  border-radius: 40% 40% 999px 999px;
   background: linear-gradient(
-    180deg,
-    rgba(90, 96, 72, 0.35) 0%,
-    rgba(90, 96, 72, 0.08) 100%
+    0deg,
+    rgba(55, 58, 45, 0.55) 0%,
+    rgba(123, 129, 107, 0.5) 55%,
+    rgba(160, 168, 140, 0.35) 100%
   );
-  opacity: calc(0.25 + (var(--glass-edge, 0) * 0.55));
+  border: 1px solid rgba(90, 96, 72, 0.35);
+  border-top: 0;
+  transform-origin: bottom center;
+  transform: rotateX(-90deg) translateZ(0.5px);
+  opacity: calc(0.2 + var(--glass-bot) * 0.9);
   pointer-events: none;
-  z-index: -1;
-  filter: blur(0.2px);
+  box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+  backface-visibility: hidden;
 }
 
 .glass-cta:hover {
-  background: rgba(123, 129, 107, 0.6);
+  background-color: rgba(123, 129, 107, 0.6);
   --glass-lift: -2px;
   box-shadow:
     inset 0 3px 6px rgba(255, 255, 255, 0.7),
+    inset 0 -2px 4px rgba(60, 64, 50, 0.16),
     0 8px 25px rgba(123, 129, 107, 0.45);
 }
 
 .glass-cta:active {
   --glass-lift: 0px;
-  background: rgba(123, 129, 107, 0.5);
+  background-color: rgba(123, 129, 107, 0.5);
   box-shadow:
     inset 0 2px 4px rgba(255, 255, 255, 0.45),
     0 3px 10px rgba(123, 129, 107, 0.28);
@@ -322,23 +370,53 @@
   box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.35);
   --glass-rx: 0deg !important;
   --glass-lift: 0px !important;
+  --glass-top: 0 !important;
+  --glass-bot: 0 !important;
+}
+
+.glass-cta:disabled::before,
+.glass-cta:disabled::after,
+.glass-cta[aria-disabled="true"]::before,
+.glass-cta[aria-disabled="true"]::after,
+.glass-cta[data-disabled]::before,
+.glass-cta[data-disabled]::after {
+  opacity: 0.1;
 }
 
 html.dark .glass-cta,
 html.dark .glass-cta:hover,
 html.dark .glass-cta:active {
   border: 1px solid rgba(250, 246, 239, 0.28);
-  background: rgba(123, 129, 107, 0.5);
+  background-color: rgba(123, 129, 107, 0.5);
   color: #faf6ef;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
   box-shadow:
     inset 0 2px 5px rgba(255, 255, 255, 0.28),
+    inset 0 -2px 4px rgba(18, 26, 42, 0.35),
     0 4px 18px rgba(18, 26, 42, 0.45),
     0 0 20px rgba(123, 129, 107, 0.22);
 }
 
+html.dark .glass-cta::before {
+  background: linear-gradient(
+    180deg,
+    rgba(250, 246, 239, 0.45) 0%,
+    rgba(200, 210, 175, 0.35) 50%,
+    rgba(123, 129, 107, 0.55) 100%
+  );
+}
+
+html.dark .glass-cta::after {
+  background: linear-gradient(
+    0deg,
+    rgba(18, 26, 42, 0.7) 0%,
+    rgba(90, 96, 72, 0.55) 60%,
+    rgba(123, 129, 107, 0.4) 100%
+  );
+}
+
 html.dark .glass-cta:hover {
-  background: rgba(123, 129, 107, 0.65);
+  background-color: rgba(123, 129, 107, 0.65);
   box-shadow:
     inset 0 3px 6px rgba(255, 255, 255, 0.35),
     0 8px 28px rgba(18, 26, 42, 0.55),
@@ -387,7 +465,7 @@ html.dark .glass-cta:focus-visible {
   outline-offset: 3px;
 }
 
-/* Secondary / quiet crystal glass — clear frost, sage label */
+/* Secondary / quiet — clear frost face + sage label */
 .glass-cta.frost-white,
 .glass-cta.frost-white:hover,
 .glass-cta.frost-white:active,
@@ -398,28 +476,43 @@ html.dark .glass-cta:focus-visible {
 .glass-cta.glass-cta-quiet:focus-visible {
   border: 1px solid rgba(255, 255, 255, 0.5);
   background: rgba(255, 255, 255, 0.25);
-  background-image: none;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.18) 55%,
+    rgba(243, 238, 230, 0.28) 100%
+  );
   color: #7b816b;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   box-shadow:
     inset 0 2px 4px rgba(0, 0, 0, 0.15),
-    inset 0 2px 4px rgba(255, 255, 255, 0.5);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+    inset 0 2px 4px rgba(255, 255, 255, 0.5),
+    0 4px 14px rgba(217, 205, 184, 0.35);
+}
+
+.glass-cta.frost-white::before,
+.glass-cta.glass-cta-quiet::before {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(250, 246, 239, 0.65) 50%,
+    rgba(217, 205, 184, 0.45) 100%
+  );
 }
 
 .glass-cta.frost-white::after,
 .glass-cta.glass-cta-quiet::after {
   background: linear-gradient(
-    180deg,
-    rgba(123, 129, 107, 0.22) 0%,
-    rgba(123, 129, 107, 0.05) 100%
+    0deg,
+    rgba(122, 108, 90, 0.35) 0%,
+    rgba(217, 205, 184, 0.45) 55%,
+    rgba(255, 255, 255, 0.35) 100%
   );
 }
 
 .glass-cta.frost-white:hover,
 .glass-cta.glass-cta-quiet:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.4);
   border-color: rgba(255, 255, 255, 0.65);
   --glass-lift: -2px;
   box-shadow:
@@ -430,7 +523,7 @@ html.dark .glass-cta:focus-visible {
 .glass-cta.frost-white:active,
 .glass-cta.glass-cta-quiet:active {
   --glass-lift: 0px;
-  background: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .glass-cta.frost-white:focus-visible,
@@ -448,7 +541,7 @@ html.dark .glass-cta.glass-cta-quiet,
 html.dark .glass-cta.glass-cta-quiet:hover,
 html.dark .glass-cta.glass-cta-quiet:active {
   border: 1px solid rgba(250, 246, 239, 0.28);
-  background: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   color: #d9cdb8;
   text-shadow: 0 1px 2px rgba(18, 26, 42, 0.45);
   box-shadow:
@@ -459,7 +552,7 @@ html.dark .glass-cta.glass-cta-quiet:active {
 
 html.dark .glass-cta.frost-white:hover,
 html.dark .glass-cta.glass-cta-quiet:hover {
-  background: rgba(255, 255, 255, 0.16);
+  background-color: rgba(255, 255, 255, 0.16);
   border-color: rgba(250, 246, 239, 0.38);
   box-shadow:
     inset 0 3px 6px rgba(250, 246, 239, 0.22),
@@ -479,7 +572,16 @@ html.dark .glass-cta.glass-cta-quiet:focus-visible {
   .glass-cta:active {
     --glass-rx: 0deg !important;
     --glass-lift: 0px !important;
+    --glass-top: 0 !important;
+    --glass-bot: 0 !important;
     transition: background-color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  .glass-cta::before,
+  .glass-cta::after {
+    opacity: 0.15;
+    transform: none;
+    height: 2px;
   }
 }
 
