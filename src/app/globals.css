@@ -126,21 +126,22 @@
 
   html {
     @apply font-sans;
-    background-color: #faf6ef;
+    /* Slightly deeper cream so the comet reads brighter */
+    background-color: #ddd0b8;
     color: var(--foreground);
     color-scheme: light;
     scroll-behavior: smooth;
   }
 
   html.dark {
-    background-color: #1e293c;
+    background-color: #0c121c;
     color-scheme: dark;
   }
 
   body {
     position: relative;
     min-height: 100vh;
-    background-color: #faf6ef;
+    background-color: #ddd0b8;
     background-image: none;
     color: var(--foreground);
     font-family: var(--font-body);
@@ -150,7 +151,7 @@
   }
 
   html.dark body {
-    background-color: #1e293c;
+    background-color: #0c121c;
   }
 
   h1,
@@ -880,8 +881,9 @@
 }
 
 /*
- * Tactile grain + soft illumination
- * Flat cream/navy base stays on body; this layer adds fine noise and a slow spotlight.
+ * Tactile grain + soft ambient wash + comet cursor trail.
+ * Base is a touch darker; ambient glow is a wide wash (not a UFO disc);
+ * comet is elongated, brighter, and trails the pointer.
  */
 .page-atmosphere {
   position: fixed;
@@ -890,46 +892,45 @@
   pointer-events: none;
   overflow: hidden;
   --glow-x: 58%;
-  --glow-y: 28%;
+  --glow-y: 32%;
 }
 
+/* Barely-there ambient wash — gradient spirit without a disc hotspot */
 .page-atmosphere__glow {
   position: absolute;
-  inset: -18%;
+  inset: -40%;
   background:
     radial-gradient(
-      52% 46% at var(--glow-x) var(--glow-y),
-      rgba(255, 253, 249, 0.98) 0%,
-      rgba(245, 235, 218, 0.72) 24%,
-      rgba(217, 205, 184, 0.38) 48%,
-      transparent 74%
-    ),
-    radial-gradient(
-      38% 36% at calc(var(--glow-x) + 18%) calc(var(--glow-y) + 22%),
-      rgba(121, 128, 105, 0.22) 0%,
-      rgba(121, 128, 105, 0.08) 40%,
-      transparent 70%
+      110% 90% at var(--glow-x) var(--glow-y),
+      rgba(255, 253, 249, 0.12) 0%,
+      rgba(245, 235, 218, 0.06) 45%,
+      transparent 80%
     );
-  filter: blur(26px);
+  filter: blur(56px);
+  opacity: 0.55;
   transform-origin: center;
-  will-change: transform;
 }
 
 .dark .page-atmosphere__glow {
   background:
     radial-gradient(
-      52% 46% at var(--glow-x) var(--glow-y),
-      rgba(74, 92, 122, 0.88) 0%,
-      rgba(49, 65, 90, 0.5) 30%,
-      rgba(30, 41, 60, 0.14) 58%,
-      transparent 76%
-    ),
-    radial-gradient(
-      36% 34% at calc(var(--glow-x) + 14%) calc(var(--glow-y) + 20%),
-      rgba(121, 128, 105, 0.24) 0%,
-      rgba(121, 128, 105, 0.08) 45%,
-      transparent 72%
+      110% 90% at var(--glow-x) var(--glow-y),
+      rgba(61, 78, 108, 0.14) 0%,
+      rgba(49, 65, 90, 0.06) 48%,
+      transparent 82%
     );
+  opacity: 0.6;
+}
+
+/* Canvas comet — slight overall soften; keep low so it doesn’t become a disc */
+.page-atmosphere__comet-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0.92;
+  filter: blur(3px);
 }
 
 .page-atmosphere__grain {
@@ -975,7 +976,11 @@
 
   .page-atmosphere__glow {
     animation: none;
-    filter: blur(22px);
+    filter: blur(28px);
+  }
+
+  .page-atmosphere__comet-canvas {
+    display: none;
   }
 
   .glass-cta,
