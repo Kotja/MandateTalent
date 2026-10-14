@@ -919,14 +919,15 @@
   opacity: 0.6;
 }
 
-/* Canvas comet ribbon — soft edges drawn in JS; no CSS blur (blur → UFO blob) */
+/* Canvas comet — slight overall soften; keep low so it doesn’t become a disc */
 .page-atmosphere__comet-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-  opacity: 1;
+  opacity: 0.92;
+  filter: blur(3px);
 }
 
 .page-atmosphere__grain {

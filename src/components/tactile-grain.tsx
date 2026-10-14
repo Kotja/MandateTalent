@@ -21,8 +21,8 @@ export function TactileGrain() {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const points: Pt[] = [];
-    const MAX_AGE_MS = 1000;
-    const MAX_POINTS = 64;
+    const MAX_AGE_MS = 1200;
+    const MAX_POINTS = 72;
 
     let ambientX = 0.58;
     let ambientY = 0.32;
@@ -129,12 +129,15 @@ export function TactileGrain() {
         const nx = -dy;
         const ny = dx;
         const t = i / (pts.length - 1); // 0 tip → 1 head
-        const w = tipWidth + (headWidth - tipWidth) * (t * t);
+        // Gentle ease — soft comet, not a hard wedge
+        const ease = t * t * (3 - 2 * t);
+        const w = tipWidth + (headWidth - tipWidth) * ease;
         left.push({ x: p.x + nx * w, y: p.y + ny * w });
         right.push({ x: p.x - nx * w, y: p.y - ny * w });
       }
 
       ctx.save();
+      ctx.globalCompositeOperation = "lighter";
       ctx.shadowBlur = blur;
       ctx.shadowColor = fill;
       ctx.fillStyle = fill;
@@ -163,18 +166,40 @@ export function TactileGrain() {
       const travel = Math.hypot(head.x - tip.x, head.y - tip.y);
       if (travel < 48) return; // wait until we have a real trail length
 
-      const life = Math.min(1, Math.max(0.4, 1 - (now - head.t) / 500));
+      const life = Math.min(1, Math.max(0.35, 1 - (now - head.t) / 650));
 
-      // Soft bloom layers only — no hard laser core, no big head disc.
+      // Softer comet: wide faint halo + slight glow, muted core (no hard disc).
       if (isDark) {
-        fillRibbon(smoothed, 72, 18, `rgba(90, 130, 190, ${0.2 * life})`, 42);
-        fillRibbon(smoothed, 48, 12, `rgba(150, 185, 230, ${0.38 * life})`, 28);
-        fillRibbon(smoothed, 26, 6, `rgba(220, 232, 255, ${0.55 * life})`, 14);
+        fillRibbon(smoothed, 96, 28, `rgba(80, 120, 180, ${0.1 * life})`, 56);
+        fillRibbon(smoothed, 64, 18, `rgba(120, 160, 215, ${0.18 * life})`, 38);
+        fillRibbon(smoothed, 36, 10, `rgba(190, 215, 245, ${0.28 * life})`, 22);
+        fillRibbon(smoothed, 18, 5, `rgba(230, 240, 255, ${0.32 * life})`, 10);
       } else {
-        fillRibbon(smoothed, 78, 20, `rgba(255, 210, 150, ${0.35 * life})`, 40);
-        fillRibbon(smoothed, 50, 12, `rgba(255, 236, 195, ${0.55 * life})`, 26);
-        fillRibbon(smoothed, 28, 7, `rgba(255, 250, 235, ${0.7 * life})`, 12);
+        fillRibbon(smoothed, 100, 30, `rgba(255, 215, 165, ${0.14 * life})`, 54);
+        fillRibbon(smoothed, 68, 20, `rgba(255, 230, 190, ${0.22 * life})`, 36);
+        fillRibbon(smoothed, 38, 11, `rgba(255, 245, 220, ${0.32 * life})`, 20);
+        fillRibbon(smoothed, 18, 5, `rgba(255, 252, 245, ${0.38 * life})`, 8);
       }
+
+      // Slight head glow — diffuse, not a UFO blob
+      const r = 36;
+      const g = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, r * 2.6);
+      if (isDark) {
+        g.addColorStop(0, `rgba(210, 225, 255, ${0.22 * life})`);
+        g.addColorStop(0.45, `rgba(140, 175, 220, ${0.1 * life})`);
+        g.addColorStop(1, "rgba(140, 175, 220, 0)");
+      } else {
+        g.addColorStop(0, `rgba(255, 248, 230, ${0.28 * life})`);
+        g.addColorStop(0.45, `rgba(255, 230, 190, ${0.12 * life})`);
+        g.addColorStop(1, "rgba(255, 230, 190, 0)");
+      }
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(head.x, head.y, r * 2.6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     };
 
     const tick = (now: number) => {
