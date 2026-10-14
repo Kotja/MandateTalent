@@ -233,7 +233,7 @@
 
 /*
  * Crystal glass CTAs — thick 3D pills (reference fill) + viewport faces.
- * --glass-rx / --glass-top / --glass-bot from head script vs mid-viewport:
+ * --glass-rx / --glass-top / --glass-bot from GlassCtaTilt (post-hydrate) vs mid-viewport:
  *   above center → see bottom face; below center → see top face.
  */
 .glass-cta,
