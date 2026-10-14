@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { TactileGrain } from "@/components/tactile-grain";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -41,7 +40,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="flex min-h-full flex-col font-sans">
-        <TactileGrain />
         <div className="page-shell relative z-[1] flex min-h-full flex-1 flex-col">
           {children}
         </div>
