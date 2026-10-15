@@ -76,6 +76,28 @@ function labelFor<T extends { value: string; label: string }>(
   return options.find((option) => option.value === value)?.label ?? value;
 }
 
+export function interestMessage(record: InterestRecord) {
+  if (record.path === "talent") {
+    const lines = [
+      `Name: ${record.name}`,
+      `City: ${record.city}`,
+      `Situation: ${labelFor(situations, record.situation)}`,
+    ];
+    if (record.note) lines.push(`Note: ${record.note}`);
+    return lines.join("\n");
+  }
+
+  const lines = [
+    `Name: ${record.name}`,
+    `Company: ${record.company}`,
+    `Role: ${labelFor(hiringRoles, record.role)}`,
+    `Company size: ${labelFor(companySizes, record.companySize)}`,
+    `Cover: ${labelFor(covers, record.cover)}`,
+  ];
+  if (record.note) lines.push(`Note: ${record.note}`);
+  return lines.join("\n");
+}
+
 export function confirmationMessage(record: InterestRecord) {
   if (record.path === "talent") {
     const situation = labelFor(situations, record.situation).toLowerCase();

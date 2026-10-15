@@ -19,9 +19,9 @@ Step-by-step for a Mac checkout: see [LOCALHOST.md](./LOCALHOST.md).
 
 ## Interest submissions
 
-On the local server the form posts to `POST /api/interest`. Valid submissions append to `data/interest-submissions.json` (gitignored).
+The form posts to the Google Apps Script web app (`NEXT_PUBLIC_INTEREST_ENDPOINT`) with `email`, `audience`, `message`, and `source`. The shared token is `NEXT_PUBLIC_INTEREST_SECRET` (public in the page by design). Local values live in `.env.local`. The Pages workflow injects the same values at build time.
 
-GitHub Pages is a static export and has no API. Local `npm run local` / `npm run build` + `npm start` keep the handler.
+`POST /api/interest` still appends to `data/interest-submissions.json` on the local server, but the form does not use it.
 
 ## Optional: static export / Pages
 

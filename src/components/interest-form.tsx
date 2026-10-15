@@ -8,8 +8,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Icon, type IconName } from "@/components/icon";
 import {
   companySizes,
+  confirmationMessage,
   covers,
   hiringRoles,
+  interestMessage,
   situations,
   validateInterest,
   type Audience,
@@ -18,6 +20,22 @@ import {
 import { cn } from "@/lib/utils";
 
 const PATH_EVENT = "mandate-path";
+
+function parseInterestResponse(raw: string) {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  try {
+    const parsed = JSON.parse(trimmed) as {
+      ok?: boolean;
+      message?: string;
+      error?: string;
+    };
+    if (!parsed || typeof parsed !== "object") return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
 
 function chooseAudience(path: Audience) {
   window.dispatchEvent(new CustomEvent<Audience>(PATH_EVENT, { detail: path }));
@@ -129,29 +147,44 @@ export function InterestForm() {
     setErrors({});
     setFormError("");
 
-    try {
-      const response = await fetch("/api/interest", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = (await response.json().catch(() => null)) as {
-        ok?: boolean;
-        message?: string;
-        errors?: Record<string, string>;
-      } | null;
+    const endpoint = process.env.NEXT_PUBLIC_INTEREST_ENDPOINT;
+    const secret = process.env.NEXT_PUBLIC_INTEREST_SECRET;
+    if (!endpoint || !secret) {
+      setStatus("error");
+      setFormError(
+        "We could not save your interest, so nothing was stored. Your answers are still here. Please try again.",
+      );
+      return;
+    }
 
-      if (!response.ok || data?.ok !== true) {
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          secret,
+          email: checked.record.email,
+          audience: checked.record.path,
+          message: interestMessage(checked.record),
+          source: "mandatetalent.com",
+        }),
+      });
+      const raw = await response.text();
+      const data = parseInterestResponse(raw);
+
+      if (!response.ok || data?.ok === false) {
         setStatus("error");
-        setErrors(data?.errors ?? {});
         setFormError(
           data?.message ??
+            data?.error ??
             "We could not save your interest, so nothing was stored. Your answers are still here. Please try again.",
         );
         return;
       }
 
-      setSuccessMessage(data.message ?? "Thank you. We have saved your interest.");
+      setSuccessMessage(
+        data?.message ?? confirmationMessage(checked.record),
+      );
       setStatus("success");
     } catch {
       setStatus("error");

@@ -47,6 +47,8 @@ jobs:
         run: npm run build:pages
         env:
           NEXT_TELEMETRY_DISABLED: "1"
+          NEXT_PUBLIC_INTEREST_ENDPOINT: https://script.google.com/macros/s/AKfycbzip4c7pfrHTQhJ0Kd1zlZVI1RN9TVNSicPJlcXJLE-lCmlWqsrHxJkrcx_ILT0Bq_CLw/exec
+          NEXT_PUBLIC_INTEREST_SECRET: "H1i{(OZk#]']Ez(;2N5q!?f!2xT0.DIhB"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5

@@ -32,7 +32,7 @@ Leave the Terminal window running. If you close it, the browser will say “refu
 - Interest landing page (talent / hiring form)
 - Crystal glass CTAs + theme toggle
 - Tactile grain + comet cursor trail
-- Local `POST /api/interest` → `data/interest-submissions.json` (gitignored)
+- Interest form posts to the deployed Google Apps Script handler (`.env.local`)
 
 ## What this is not
 
