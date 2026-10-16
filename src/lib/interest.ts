@@ -91,6 +91,27 @@ export function confirmationMessage(record: InterestRecord) {
   return `Thank you, ${record.name}. We have saved ${record.company}'s interest. You are listed as ${role}, looking for cover in ${cover}. We will write to ${record.email}.`;
 }
 
+// The sheet stores email and audience in their own columns. Everything else
+// goes into the message column as labelled lines.
+export function sheetMessage(record: InterestRecord) {
+  const lines =
+    record.path === "talent"
+      ? [
+          `Name: ${record.name}`,
+          `City: ${record.city}`,
+          `Situation: ${labelFor(situations, record.situation)}`,
+        ]
+      : [
+          `Name: ${record.name}`,
+          `Company: ${record.company}`,
+          `Role: ${labelFor(hiringRoles, record.role)}`,
+          `Company size: ${labelFor(companySizes, record.companySize)}`,
+          `Cover: ${labelFor(covers, record.cover)}`,
+        ];
+  if (record.note) lines.push(`Note: ${record.note}`);
+  return lines.join("\n");
+}
+
 export function validateInterest(
   input: InterestPayload,
 ):

@@ -17,10 +17,6 @@ const nextConfig: NextConfig = {
     ? {
         output: "export",
         images: { unoptimized: true },
-        // The interest API is a Route Handler (route.ts). Static export cannot
-        // publish it. Local server builds keep the default extensions so the
-        // handler stays available.
-        pageExtensions: ["tsx", "jsx"],
       }
     : {
         cacheComponents: true,
