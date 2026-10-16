@@ -8,8 +8,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Icon, type IconName } from "@/components/icon";
 import {
   companySizes,
+  confirmationMessage,
   covers,
   hiringRoles,
+  sheetMessage,
   situations,
   validateInterest,
   type Audience,
@@ -18,6 +20,12 @@ import {
 import { cn } from "@/lib/utils";
 
 const PATH_EVENT = "mandate-path";
+
+// Google Apps Script web app that appends rows to the signups sheet. Both
+// values are inlined at build time, so the secret is visible in the bundle.
+// It only keeps casual bots out.
+const INTEREST_ENDPOINT = process.env.NEXT_PUBLIC_INTEREST_ENDPOINT;
+const INTEREST_SECRET = process.env.NEXT_PUBLIC_INTEREST_SECRET;
 
 function chooseAudience(path: Audience) {
   window.dispatchEvent(new CustomEvent<Audience>(PATH_EVENT, { detail: path }));
@@ -129,29 +137,46 @@ export function InterestForm() {
     setErrors({});
     setFormError("");
 
+    const record = checked.record;
+
     try {
-      const response = await fetch("/api/interest", {
+      if (!INTEREST_ENDPOINT || !INTEREST_SECRET) {
+        throw new Error("Interest endpoint is not configured.");
+      }
+      // text/plain keeps this a simple CORS request. Apps Script does not
+      // answer preflight requests, so a JSON content type would be blocked.
+      const response = await fetch(INTEREST_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          secret: INTEREST_SECRET,
+          email: record.email,
+          audience: record.path,
+          message: sheetMessage(record),
+          source: window.location.hostname,
+        }),
       });
       const data = (await response.json().catch(() => null)) as {
         ok?: boolean;
-        message?: string;
-        errors?: Record<string, string>;
+        error?: string;
       } | null;
 
       if (!response.ok || data?.ok !== true) {
         setStatus("error");
-        setErrors(data?.errors ?? {});
+        if (data?.error === "invalid_email") {
+          setErrors({ email: "Enter an email like name@company.com.au." });
+          setFormError("Enter an email like name@company.com.au.");
+          document.getElementById(`${baseId}-email`)?.focus();
+          return;
+        }
+        setErrors({});
         setFormError(
-          data?.message ??
-            "We could not save your interest, so nothing was stored. Your answers are still here. Please try again.",
+          "We could not save your interest, so nothing was stored. Your answers are still here. Please try again.",
         );
         return;
       }
 
-      setSuccessMessage(data.message ?? "Thank you. We have saved your interest.");
+      setSuccessMessage(confirmationMessage(record));
       setStatus("success");
     } catch {
       setStatus("error");
