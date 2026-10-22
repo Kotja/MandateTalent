@@ -9,7 +9,7 @@ export function ThemeToggle() {
       type="button"
       data-theme-toggle
       aria-label="Dark mode"
-      className="theme-glass-toggle focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-[#798069]"
+      className="theme-glass-toggle focus-visible:outline-none focus-visible:[box-shadow:var(--teal-glow)]"
     >
       <span className="theme-glass-toggle__track" aria-hidden="true">
         <span className="theme-glass-toggle__thumb" />

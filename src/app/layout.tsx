@@ -25,11 +25,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: `(function(){var k="mandate-theme";function apply(d){document.documentElement.classList.toggle("dark",d);document.documentElement.style.colorScheme=d?"dark":"light";try{localStorage.setItem(k,d?"dark":"light")}catch(e){}var b=document.querySelector("[data-theme-toggle]");if(b)b.setAttribute("aria-pressed",d?"true":"false")}function preferred(){try{var s=localStorage.getItem(k);if(s==="dark")return true;if(s==="light")return false}catch(e){}return false}apply(preferred());document.addEventListener("click",function(e){var t=e.target&&e.target.closest&&e.target.closest("[data-theme-toggle]");if(!t)return;e.preventDefault();apply(!document.documentElement.classList.contains("dark"))},true);})();`,
           }}
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){var MAX=30,reduce=false,tick=false;function update(){if(reduce){document.querySelectorAll(".glass-cta").forEach(function(el){el.style.setProperty("--glass-rx","0deg");el.style.setProperty("--glass-top","0");el.style.setProperty("--glass-bot","0")});return}var mid=window.innerHeight*0.5;document.querySelectorAll(".glass-cta").forEach(function(el){var r=el.getBoundingClientRect();if(r.bottom<-80||r.top>window.innerHeight+80)return;var y=r.top+r.height*0.5;var t=(y-mid)/mid;if(t<-1)t=-1;if(t>1)t=1;var deg=-t*MAX;var top=Math.max(0,t);var bot=Math.max(0,-t);el.style.setProperty("--glass-rx",deg.toFixed(2)+"deg");el.style.setProperty("--glass-top",top.toFixed(3));el.style.setProperty("--glass-bot",bot.toFixed(3))})}function onScroll(){if(tick)return;tick=true;requestAnimationFrame(function(){tick=false;update()})}function init(){reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;update();window.addEventListener("scroll",onScroll,{passive:true});window.addEventListener("resize",onScroll)}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init()})();`,
-          }}
-        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -38,11 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Bodoni+Moda+SC:wght@400;500;600&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         />
       </head>
       <body className="flex min-h-full flex-col font-sans">

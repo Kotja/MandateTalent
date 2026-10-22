@@ -9,7 +9,7 @@ import { Icon, type IconName } from "@/components/icon";
 import {
   companySizes,
   confirmationMessage,
-  covers,
+  coverSuggestions,
   hiringRoles,
   interestMessage,
   situations,
@@ -200,7 +200,7 @@ export function InterestForm() {
         role="status"
         className="rounded-md border border-border bg-background p-6"
       >
-        <Icon name="check" size={24} className="text-primary" />
+        <Icon name="check" size={24} className="icon-signal" />
         <h3 className="mt-4">Interest saved</h3>
         <p className="mt-3 max-w-[62ch] text-[16px] leading-[1.2] text-foreground">
           {successMessage}
@@ -396,15 +396,15 @@ export function InterestForm() {
                 />
               </Field>
               <Field id={`${baseId}-cover`} label="Cover you need" error={errors.cover}>
-                <Select
+                <SuggestInput
                   id={`${baseId}-cover`}
                   name="cover"
                   value={cover}
                   disabled={busy}
                   invalid={Boolean(errors.cover)}
                   describedBy={errors.cover ? `${baseId}-cover-error` : undefined}
-                  placeholder="Select a role family"
-                  options={covers}
+                  placeholder="What cover do you need?"
+                  suggestions={coverSuggestions}
                   onChange={setCover}
                 />
               </Field>
@@ -435,7 +435,7 @@ export function InterestForm() {
       )}
 
       <div>
-        <Button type="submit" className="rounded-[50px]" disabled={busy}>
+        <Button type="submit" className="rounded-[8px]" disabled={busy}>
           {busy ? "Sending your interest…" : "Register interest"}
         </Button>
       </div>
@@ -465,7 +465,7 @@ function PathCard({
   return (
     <label
       className={cn(
-        "tile-glass flex cursor-pointer items-start gap-3 border-0 p-4 outline-none",
+        "tile-glass flex cursor-pointer items-start gap-3 p-4 outline-none",
         checked && "tile-selected",
       )}
     >
@@ -478,13 +478,13 @@ function PathCard({
         onChange={onChange}
         className="sr-only"
       />
-      <Icon name={icon} size={24} className="mt-0.5 shrink-0 text-primary" />
+      <Icon name={icon} size={24} className="icon-signal mt-0.5 shrink-0" />
       <span className="flex flex-col gap-1">
         <span className="text-[16px] text-foreground">{title}</span>
         <span className="text-[13px] leading-[1.2] text-foreground">{detail}</span>
       </span>
       {checked ? (
-        <Icon name="check" size={20} className="ml-auto text-primary" />
+        <Icon name="check" size={20} className="icon-signal ml-auto" />
       ) : null}
     </label>
   );
@@ -525,6 +525,216 @@ function FieldError({ id, children }: { id: string; children: React.ReactNode })
       <Icon name="info-circle" size={16} className="mt-0.5 shrink-0 text-accent" />
       <span>{children}</span>
     </p>
+  );
+}
+
+function rankCoverSuggestions(query: string, pool: readonly string[]) {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+
+  const scored = pool
+    .map((suggestion) => {
+      const lower = suggestion.toLowerCase();
+      if (lower === q) return { suggestion, score: 0 };
+      if (lower.startsWith(q)) return { suggestion, score: 1 };
+      const words = lower.split(/\s+/);
+      if (words.some((word) => word.startsWith(q))) return { suggestion, score: 2 };
+      if (lower.includes(q)) return { suggestion, score: 3 };
+      return null;
+    })
+    .filter((row): row is { suggestion: string; score: number } => row !== null)
+    .sort((a, b) => a.score - b.score || a.suggestion.localeCompare(b.suggestion));
+
+  return scored.map((row) => row.suggestion).slice(0, 6);
+}
+
+function SuggestInput({
+  id,
+  name,
+  value,
+  onChange,
+  suggestions: pool,
+  placeholder,
+  disabled,
+  invalid,
+  describedBy,
+}: {
+  id: string;
+  name: string;
+  value: string;
+  onChange: (value: string) => void;
+  suggestions: readonly string[];
+  placeholder: string;
+  disabled?: boolean;
+  invalid?: boolean;
+  describedBy?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listId = `${id}-list`;
+
+  const matches = rankCoverSuggestions(value, pool);
+  const typed = value;
+  const q = typed.toLowerCase();
+  // Ghost only when exactly one prefix match — never lock "Pro" onto Project vs Product
+  const prefixMatches = matches.filter((item) =>
+    item.toLowerCase().startsWith(q),
+  );
+  const uniquePrefix =
+    typed.trim().length > 0 && prefixMatches.length === 1
+      ? prefixMatches[0]
+      : "";
+  const canComplete =
+    Boolean(uniquePrefix) && uniquePrefix.length > typed.length;
+  const ghostSuffix = canComplete ? uniquePrefix.slice(typed.length) : "";
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointer(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointer);
+    return () => document.removeEventListener("mousedown", onPointer);
+  }, [open]);
+
+  useEffect(() => {
+    setActive(0);
+  }, [value]);
+
+  function choose(next: string) {
+    onChange(next);
+    setOpen(false);
+    inputRef.current?.focus();
+  }
+
+  function acceptGhost() {
+    if (!canComplete) return;
+    onChange(uniquePrefix);
+  }
+
+  function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (disabled) return;
+    // Only ArrowRight at end accepts ghost; Tab stays for leaving the field
+    if (event.key === "ArrowRight" && canComplete) {
+      const el = inputRef.current;
+      const atEnd =
+        el &&
+        el.selectionStart === el.value.length &&
+        el.selectionEnd === el.value.length;
+      if (atEnd) {
+        event.preventDefault();
+        acceptGhost();
+        return;
+      }
+    }
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      if (!open && matches.length > 0) {
+        setOpen(true);
+        return;
+      }
+      if (matches.length === 0) return;
+      setActive((current) => {
+        const next = event.key === "ArrowDown" ? current + 1 : current - 1;
+        return (next + matches.length) % matches.length;
+      });
+    } else if (event.key === "Enter" && open && matches[active]) {
+      // Don't steal Enter when the typed value isn't a list pick — allow custom text
+      if (matches[active].toLowerCase().startsWith(q) || q.length === 0) {
+        event.preventDefault();
+        choose(matches[active]);
+      }
+    } else if (event.key === "Escape") {
+      setOpen(false);
+    }
+  }
+
+  const showList = open && matches.length > 0 && typed.trim().length > 0;
+
+  return (
+    <div ref={rootRef} className="relative">
+      <input type="hidden" name={name} value={value} />
+      <div className="field-surface nested-radius relative h-11">
+        {ghostSuffix ? (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-0 flex items-center px-3 text-[16px] font-sans"
+          >
+            <span className="invisible whitespace-pre">{typed}</span>
+            <span className="whitespace-pre text-[color:color-mix(in_srgb,var(--navy-600)_55%,transparent)] dark:text-[color:color-mix(in_srgb,var(--slate-300)_55%,transparent)]">
+              {ghostSuffix}
+            </span>
+          </div>
+        ) : null}
+        <input
+          ref={inputRef}
+          id={id}
+          type="text"
+          role="combobox"
+          autoComplete="off"
+          disabled={disabled}
+          value={value}
+          placeholder={placeholder}
+          aria-autocomplete="both"
+          aria-expanded={showList}
+          aria-controls={listId}
+          aria-invalid={invalid || undefined}
+          aria-describedby={describedBy}
+          aria-activedescendant={
+            showList && matches[active] ? `${id}-opt-${active}` : undefined
+          }
+          className="relative z-[1] h-11 w-full min-w-0 border-0 bg-transparent px-3 text-[16px] font-sans outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          onFocus={() => setOpen(true)}
+          onChange={(event) => {
+            onChange(event.target.value);
+            setOpen(true);
+          }}
+          onKeyDown={onKeyDown}
+        />
+      </div>
+      {showList ? (
+        <ul
+          id={listId}
+          role="listbox"
+          aria-label="Cover suggestions"
+          className="menu-glass nested-radius absolute z-20 mt-1 max-h-60 w-full overflow-auto p-1"
+        >
+          {matches.map((suggestion, index) => {
+            const lower = suggestion.toLowerCase();
+            const q = typed.trim().toLowerCase();
+            const prefixLen = lower.startsWith(q) ? typed.trim().length : 0;
+            return (
+              <li
+                key={suggestion}
+                id={`${id}-opt-${index}`}
+                role="option"
+                aria-selected={value === suggestion}
+                data-active={index === active ? "true" : undefined}
+                className="cursor-pointer rounded-[8px] px-3 py-2 text-[16px]"
+                onMouseEnter={() => setActive(index)}
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => choose(suggestion)}
+              >
+                {prefixLen > 0 ? (
+                  <>
+                    <span className="font-medium text-foreground">
+                      {suggestion.slice(0, prefixLen)}
+                    </span>
+                    <span className="text-muted-foreground">
+                      {suggestion.slice(prefixLen)}
+                    </span>
+                  </>
+                ) : (
+                  suggestion
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
+    </div>
   );
 }
 
