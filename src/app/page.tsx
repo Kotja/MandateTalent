@@ -138,7 +138,7 @@ export default function Home() {
               <h2>How a cover contract moves</h2>
               <div className="mt-10 grid items-stretch gap-5 md:grid-cols-3">
                 <article className="lift-card flex h-auto min-w-0 flex-col gap-5 overflow-visible border-l-[3px] border-l-[var(--teal)] px-5 py-6">
-                  <Icon name="user" size={22} className="icon-signal" />
+                  <Icon name="user" size={24} className="icon-signal" />
                   <h3>Talent</h3>
                   <p className="overflow-visible text-[16px] leading-[1.5] text-muted-foreground">
                     You share the work you can do from the first day, your situation,
@@ -146,7 +146,7 @@ export default function Home() {
                   </p>
                 </article>
                 <article className="lift-card accent-rail-amber flex h-auto min-w-0 flex-col gap-5 overflow-visible border-l-[3px] border-l-[var(--teal)] px-5 py-6">
-                  <Icon name="document" size={22} className="icon-amber" />
+                  <Icon name="document" size={24} className="icon-amber" />
                   <h3>The contract</h3>
                   <p className="overflow-visible text-[16px] leading-[1.5] text-muted-foreground">
                     HR or a line manager posts a structured cover contract: start and
@@ -156,7 +156,7 @@ export default function Home() {
                   </p>
                 </article>
                 <article className="lift-card flex h-auto min-w-0 flex-col gap-5 overflow-visible border-l-[3px] border-l-[var(--teal)] px-5 py-6">
-                  <Icon name="arrow-join" size={22} className="icon-signal" />
+                  <Icon name="arrow-join" size={24} className="icon-signal" />
                   <h3>Handover</h3>
                   <p className="overflow-visible text-[16px] leading-[1.5] text-muted-foreground">
                     Once the placement is accepted, a handover workspace opens. The
@@ -175,7 +175,7 @@ export default function Home() {
               <h2>Who it is for</h2>
               <div className="mt-10 grid gap-5 md:grid-cols-2">
                 <article className="who-glass p-6">
-                  <Icon name="users" size={22} className="icon-etch" />
+                  <Icon name="users" size={24} className="icon-etch" />
                   <h3 className="mt-6">Talent</h3>
                   <p className="mt-4 text-[16px] leading-[1.5] text-muted-foreground">
                     Working-holiday and temporary-visa holders, partners of visa
@@ -188,7 +188,7 @@ export default function Home() {
                   </p>
                 </article>
                 <article className="who-glass p-6">
-                  <Icon name="building" size={22} className="icon-etch" />
+                  <Icon name="building" size={24} className="icon-etch" />
                   <h3 className="mt-6">Employers</h3>
                   <p className="mt-4 text-[16px] leading-[1.5] text-muted-foreground">
                     HR managers and line managers at organisations of about 50 to 500
