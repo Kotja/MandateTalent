@@ -435,7 +435,7 @@ export function InterestForm() {
       )}
 
       <div>
-        <Button type="submit" className="rounded-[8px]" disabled={busy}>
+        <Button type="submit" className="rounded-full" disabled={busy}>
           {busy ? "Sending your interest…" : "Register interest"}
         </Button>
       </div>

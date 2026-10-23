@@ -5,9 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* SpringBoard / Mandate portal system */
+  /* Trust Matrix / Mandate portal — same tokens as the main app */
   --font-heading: "Inter", -apple-system, sans-serif;
   --font-body: "Inter", -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   --navy: #0f172a;
   --navy-800: #1e293b;
@@ -27,9 +28,12 @@
   --green: #16a34a;
   --green-50: #f0fdf4;
   --green-200: #bbf7d0;
+  /* Amber = attention / status (badges, visa clock, fee callout) — not brand primary */
   --amber: #d97706;
+  --amber-light: #fbbf24;
   --amber-50: #fffbeb;
   --amber-200: #fde68a;
+  --amber-glow: 0 0 0 3px rgba(217, 119, 6, 0.22);
   --red: #dc2626;
   --red-50: #fef2f2;
   --red-200: #fecaca;
@@ -109,11 +113,14 @@
   --sidebar-border: #2a4a6e;
   --sidebar-ring: var(--teal-light);
   --teal-glow: 0 0 0 3px rgba(20, 184, 166, 0.3);
+  --amber-50: rgba(217, 119, 6, 0.14);
+  --amber-glow: 0 0 0 3px rgba(251, 191, 36, 0.28);
 }
 
 @theme inline {
   --font-heading: var(--font-heading);
   --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -264,11 +271,41 @@
     color: var(--slate);
   }
 
+  /* Matches app .page-header__eyebrow */
   .eyebrow-teal {
-    color: var(--icon-signal);
+    color: var(--teal);
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .dark .eyebrow-teal {
+    color: var(--teal-light);
+  }
+
+  /* App badge--amber language — attention chip in the hero */
+  .eyebrow-amber {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--amber-200);
+    background: var(--amber-50);
+    color: var(--amber);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dark .eyebrow-amber {
+    border-color: rgba(251, 191, 36, 0.35);
+    background: rgba(217, 119, 6, 0.16);
+    color: var(--amber-light);
+  }
+
+  .mono {
+    font-family: var(--font-mono);
   }
 
   @media (min-width: 768px) {
@@ -307,7 +344,7 @@
   position: relative;
   overflow: hidden;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 999px;
   background: var(--teal);
   background-image: none;
   color: var(--white);
@@ -757,6 +794,39 @@ html.dark .theme-glass-toggle__thumb {
   filter: none;
 }
 
+/* Attention amber — same role as app visa-clock / badge--amber */
+.text-amber-attention {
+  color: var(--amber);
+}
+
+.dark .text-amber-attention {
+  color: var(--amber-light);
+}
+
+.icon-amber,
+.icon-amber path,
+.icon-amber g {
+  stroke-width: 1.5px;
+  fill: none;
+  color: var(--amber);
+  opacity: 1;
+  filter: none;
+}
+
+.dark .icon-amber,
+.dark .icon-amber path,
+.dark .icon-amber g {
+  color: var(--amber-light);
+}
+
+.accent-rail-amber {
+  border-left-color: var(--amber) !important;
+}
+
+.dark .accent-rail-amber {
+  border-left-color: var(--amber-light) !important;
+}
+
 
 /* Sharp crystal renders (transparent PNGs from studio glass letters / 12%) */
 .crystal-render {
@@ -806,9 +876,9 @@ html.dark .theme-glass-toggle__thumb {
   color: var(--teal);
 }
 
-/* Same primary CTA look as “I’m talent” — teal fill, white label */
+/* Same primary CTA look as “I’m talent” — teal fill, white label, pill */
 .site-header .glass-cta {
-  border-radius: 8px;
+  border-radius: var(--radius-pill);
   background: var(--teal);
   color: var(--white) !important;
   text-decoration: none;
@@ -846,12 +916,21 @@ html.dark .theme-glass-toggle__thumb {
 }
 
 /* Soft oval floor cast — standing form, not a haze around the glyphs */
+/* Big attention figure — same mono weight language as app .visa-clock__days / .stat-tile__value */
 .fee-figure {
   position: relative;
   display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  letter-spacing: -0.04em;
   line-height: 1;
   padding-bottom: 0.28em;
+  color: var(--amber);
   filter: none;
+}
+
+html.dark .fee-figure {
+  color: var(--amber-light);
 }
 
 .fee-figure::before {
@@ -902,11 +981,13 @@ html.dark .theme-glass-toggle__thumb {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    var(--slate) 0%,
-    var(--slate) 100%
-  );
+  background:
+    radial-gradient(
+      ellipse 70% 45% at 88% 8%,
+      rgba(13, 148, 136, 0.06) 0%,
+      transparent 62%
+    ),
+    linear-gradient(180deg, var(--slate) 0%, var(--slate) 100%);
   pointer-events: none;
 }
 
@@ -918,11 +999,17 @@ html.dark .theme-glass-toggle__thumb {
 }
 
 .dark .page-atmosphere__hero::after {
-  background: linear-gradient(
-    180deg,
-    rgba(10, 15, 28, 0.72) 0%,
-    rgba(10, 15, 28, 0.9) 100%
-  );
+  background:
+    radial-gradient(
+      ellipse 65% 40% at 90% 6%,
+      rgba(20, 184, 166, 0.08) 0%,
+      transparent 58%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(10, 15, 28, 0.72) 0%,
+      rgba(10, 15, 28, 0.9) 100%
+    );
 }
 
 .page-atmosphere__grain {

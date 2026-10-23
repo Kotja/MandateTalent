@@ -75,7 +75,7 @@ export default function Home() {
               href="#register"
               className={cn(
                 buttonVariants(),
-                "h-11 shrink-0 rounded-[8px] px-5 text-[16px] text-white hover:text-white",
+                "h-11 shrink-0 rounded-full px-5 text-[16px] text-white hover:text-white",
               )}
             >
               Register interest
@@ -86,7 +86,7 @@ export default function Home() {
 
       <main>
         <section className="mx-auto w-full max-w-[1080px] px-5 py-20 sm:px-6 md:py-28">
-          <p className="eyebrow-teal text-[11px] leading-[1.4]">
+          <p className="eyebrow-amber text-[11px] leading-[1.4]">
             Melbourne launch
           </p>
           <h1 className="hero-title mt-6 max-w-[18ch]">
@@ -119,7 +119,7 @@ export default function Home() {
                   person whose right to work still holds at the end, with a buffer,
                   not only on the day you look them up.
                 </p>
-                <p className="text-[18px] leading-[1.35] font-semibold tracking-[-0.01em] text-foreground">
+                <p className="text-[18px] leading-[1.35] font-semibold tracking-[-0.01em] text-amber-attention">
                   Matching visa dates to the contract, not just a verified tick.
                 </p>
                 <p className="text-[16px] leading-[1.5] text-muted-foreground">
@@ -145,8 +145,8 @@ export default function Home() {
                     and the dates you are free.
                   </p>
                 </article>
-                <article className="lift-card flex h-auto min-w-0 flex-col gap-5 overflow-visible border-l-[3px] border-l-[var(--teal)] px-5 py-6">
-                  <Icon name="document" size={22} className="icon-signal" />
+                <article className="lift-card accent-rail-amber flex h-auto min-w-0 flex-col gap-5 overflow-visible border-l-[3px] border-l-[var(--teal)] px-5 py-6">
+                  <Icon name="document" size={22} className="icon-amber" />
                   <h3>The contract</h3>
                   <p className="overflow-visible text-[16px] leading-[1.5] text-muted-foreground">
                     HR or a line manager posts a structured cover contract: start and
@@ -209,7 +209,7 @@ export default function Home() {
           <div className="mx-auto w-full max-w-[1080px] px-5 sm:px-6">
             <div className="shell-26 flex flex-wrap items-center gap-x-12 gap-y-8 border-t border-border py-20 md:py-28">
               <p
-                className="fee-figure font-sans text-[144px] font-semibold leading-none tracking-[-0.03em] text-[var(--teal)] sm:text-[176px] dark:text-[var(--teal-light)]"
+                className="fee-figure text-[144px] leading-none sm:text-[176px]"
                 aria-label="12 percent"
               >
                 12%
