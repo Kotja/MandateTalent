@@ -7,11 +7,11 @@
   },
   "scripts": {
     "dev": "next dev",
+    "local": "next dev --hostname 127.0.0.1 --port 45371",
     "build": "next build",
     "build:pages": "STATIC_EXPORT=true next build",
     "start": "next start",
-    "lint": "eslint",
-    "local": "next dev --hostname 127.0.0.1 --port 45371"
+    "lint": "eslint"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

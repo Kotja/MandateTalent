@@ -19,11 +19,31 @@ export const companySizes = [
   { value: "over-500", label: "Over 500 people" },
 ] as const;
 
-export const covers = [
-  { value: "finance-ops", label: "Finance operations" },
-  { value: "customer-service", label: "Customer service" },
-  { value: "marketing-ops", label: "Marketing operations" },
-  { value: "other", label: "Other" },
+/** Free-text cover titles used only for live typeahead (not a fixed family list). */
+export const coverSuggestions = [
+  "Accounts payable",
+  "Accounts receivable",
+  "Bookkeeping",
+  "Business operations",
+  "Customer success",
+  "Customer service",
+  "Data entry",
+  "Executive assistant",
+  "Finance operations",
+  "Financial reporting",
+  "HR operations",
+  "Marketing coordinator",
+  "Marketing operations",
+  "Office administration",
+  "Operations coordinator",
+  "Payroll",
+  "Product manager",
+  "Product marketing",
+  "Project coordination",
+  "Project manager",
+  "Reception",
+  "Sales support",
+  "Social media",
 ] as const;
 
 export type Audience = "talent" | "hiring";
@@ -57,7 +77,7 @@ type HiringRecord = {
   company: string;
   role: (typeof hiringRoles)[number]["value"];
   companySize: (typeof companySizes)[number]["value"];
-  cover: (typeof covers)[number]["value"];
+  cover: string;
   note?: string;
 };
 
@@ -76,6 +96,28 @@ function labelFor<T extends { value: string; label: string }>(
   return options.find((option) => option.value === value)?.label ?? value;
 }
 
+export function interestMessage(record: InterestRecord) {
+  if (record.path === "talent") {
+    const lines = [
+      `Name: ${record.name}`,
+      `City: ${record.city}`,
+      `Situation: ${labelFor(situations, record.situation)}`,
+    ];
+    if (record.note) lines.push(`Note: ${record.note}`);
+    return lines.join("\n");
+  }
+
+  const lines = [
+    `Name: ${record.name}`,
+    `Company: ${record.company}`,
+    `Role: ${labelFor(hiringRoles, record.role)}`,
+    `Company size: ${labelFor(companySizes, record.companySize)}`,
+    `Cover: ${record.cover}`,
+  ];
+  if (record.note) lines.push(`Note: ${record.note}`);
+  return lines.join("\n");
+}
+
 export function confirmationMessage(record: InterestRecord) {
   if (record.path === "talent") {
     const situation = labelFor(situations, record.situation).toLowerCase();
@@ -83,10 +125,7 @@ export function confirmationMessage(record: InterestRecord) {
   }
 
   const role = record.role === "hr" ? "HR" : "a line manager";
-  const cover =
-    record.cover === "other"
-      ? "another kind of cover"
-      : labelFor(covers, record.cover).toLowerCase();
+  const cover = record.cover.toLowerCase();
 
   return `Thank you, ${record.name}. We have saved ${record.company}'s interest. You are listed as ${role}, looking for cover in ${cover}. We will write to ${record.email}.`;
 }
@@ -106,7 +145,7 @@ export function sheetMessage(record: InterestRecord) {
           `Company: ${record.company}`,
           `Role: ${labelFor(hiringRoles, record.role)}`,
           `Company size: ${labelFor(companySizes, record.companySize)}`,
-          `Cover: ${labelFor(covers, record.cover)}`,
+          `Cover: ${record.cover}`,
         ];
   if (record.note) lines.push(`Note: ${record.note}`);
   return lines.join("\n");
@@ -196,8 +235,10 @@ export function validateInterest(
       errors.companySize = "Choose a company size.";
     }
 
-    if (!covers.some((option) => option.value === cover)) {
-      errors.cover = "Choose the cover you need.";
+    if (!cover) {
+      errors.cover = "Enter or choose the cover you need.";
+    } else if (cover.length > 120) {
+      errors.cover = "Keep the cover under 120 characters.";
     }
 
     if (Object.keys(errors).length > 0) {
@@ -211,7 +252,7 @@ export function validateInterest(
       company,
       role: role as HiringRecord["role"],
       companySize: companySize as HiringRecord["companySize"],
-      cover: cover as HiringRecord["cover"],
+      cover,
     };
     if (note) record.note = note;
     return { ok: true, record };
